@@ -8,6 +8,6 @@
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  console.log('🗣️ 雷州话翻译工具已启动')
+  console.log('🗣️ 方言翻译器已启动')
 })
 </script>
