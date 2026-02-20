@@ -39,7 +39,7 @@
             class="relative w-28 h-28 rounded-full transition-all shadow-lg"
             :class="isRecording || isWebSpeechListening ? 'bg-red-500 scale-95' : 'bg-white'"
           >
-            <span class="text-5xl">{{ isRecording ? '⏸️' : '🎤' }}</span>
+            <span class="text-5xl">{{ isRecording || isWebSpeechListening ? '⏸️' : '🎤' }}</span>
             <div v-if="isRecording" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-ping"></div>
           </button>
           
