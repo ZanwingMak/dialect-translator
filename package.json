@@ -1,7 +1,7 @@
 {
-  "name": "leizhou-translator",
+  "name": "dialect-translator",
   "version": "1.0.0",
-  "description": "雷州话翻译工具 - 语音转文本、文本翻译、语音合成",
+  "description": "多语言方言翻译工具 - 语音转文本、文本翻译、语音合成",
   "type": "module",
   "scripts": {
     "dev": "vite",
