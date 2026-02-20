@@ -394,6 +394,9 @@ const startRecording = async () => {
     mediaRecorder.onstop = async () => {
       if (audioChunks.length > 0) {
         const blob = new Blob(audioChunks, { type: 'audio/webm' })
+        // 保存录音用于播放
+        sourceAudioUrl.value = URL.createObjectURL(blob)
+        sourceAudio.value.src = sourceAudioUrl.value
         await recognizeWithWhisper(blob)
       }
     }
