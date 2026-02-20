@@ -216,7 +216,17 @@
                 <option v-for="m in translateModels" :key="m.value" :value="m.value">{{ m.label }}</option>
               </select>
             </div>
-            <div>
+            <!-- 自定义模型输入 -->
+            <div v-if="config.translateModel === 'custom'">
+              <label class="text-white/70 text-xs block mb-1">模型名称</label>
+              <input 
+                v-model="config.customModel"
+                type="text"
+                placeholder="输入模型名称"
+                class="w-full px-2 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 text-xs"
+              />
+            </div>
+            <div v-else>
               <label class="text-white/70 text-xs block mb-1">语音识别</label>
               <select 
                 v-model="config.whisperModel"
@@ -1187,6 +1197,7 @@ const config = reactive({
   provider: 'openai',
   apiKey: '',
   translateModel: 'gpt-3.5-turbo',
+  customModel: '',
   whisperModel: 'webspeech',
   ttsModel: 'tts-1',
   customBaseUrl: ''
@@ -1308,7 +1319,15 @@ const providers = {
 
 const providerLabel = computed(() => providers[config.provider]?.name || 'API')
 const providerPlaceholder = computed(() => providers[config.provider]?.placeholder || 'API Key')
-const translateModels = computed(() => providers[config.provider]?.models || [{ label: 'Default', value: 'default' }])
+const translateModels = computed(() => {
+  const models = providers[config.provider]?.models || [{ label: 'Default', value: 'default' }]
+  return [...models, { label: '自定义', value: 'custom' }]
+})
+// 获取实际使用的模型名称
+const getModelName = () => {
+  return config.translateModel === 'custom' ? config.customModel : config.translateModel
+}
+
 const currentModelLabel = computed(() => {
   const model = translateModels.value.find(m => m.value === config.translateModel)
   return model?.label || config.translateModel
@@ -1360,7 +1379,7 @@ const testApiKey = async () => {
         'X-Title': 'Leizhou Translator'
       },
       body: JSON.stringify({
-        model: config.translateModel,
+        model: getModelName(),
         messages: [{ role: 'user', content: 'hi' }],
         max_tokens: 5
       })
@@ -1704,7 +1723,7 @@ const translateText = async (text) => {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        model: config.translateModel,
+        model: getModelName(),
         messages: [{
           role: 'system',
           content: systemPrompt
