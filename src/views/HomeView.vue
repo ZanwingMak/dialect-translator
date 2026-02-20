@@ -2,48 +2,45 @@
   <div class="min-h-screen bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 p-4">
     <div class="max-w-lg mx-auto">
       <!-- 语言选择器 -->
-      <div class="flex gap-2 mb-4">
+      <div class="flex gap-2 mb-3">
         <div class="flex-1">
-          <label class="text-white/70 text-xs block mb-1">源语言</label>
           <select 
             v-model="sourceLanguage"
-            class="w-full px-3 py-2 rounded-lg bg-white/20 text-white text-sm"
+            class="w-full px-3 py-2 rounded-xl bg-white/20 text-white text-sm font-medium"
           >
-            <option v-for="lang in languages" :key="lang.id" :value="lang.id">{{ lang.name }}</option>
+            <option v-for="lang in languages" :key="lang.id" :value="lang.id" class="bg-gray-800">{{ lang.name }}</option>
           </select>
         </div>
-        <div class="flex items-center justify-center pt-5">
-          <span class="text-white text-xl">→</span>
-        </div>
+        <button @click="swapLanguages" class="px-3 py-2 bg-white/20 rounded-xl text-white hover:bg-white/30 transition">
+          ⇄
+        </button>
         <div class="flex-1">
-          <label class="text-white/70 text-xs block mb-1">目标语言</label>
           <select 
             v-model="targetLanguage"
-            class="w-full px-3 py-2 rounded-lg bg-white/20 text-white text-sm"
+            class="w-full px-3 py-2 rounded-xl bg-white/20 text-white text-sm font-medium"
           >
-            <option v-for="lang in languages" :key="lang.id" :value="lang.id">{{ lang.name }}</option>
+            <option v-for="lang in languages" :key="lang.id" :value="lang.id" class="bg-gray-800">{{ lang.name }}</option>
           </select>
         </div>
       </div>
 
       <!-- 标题 -->
-      <header class="text-center mb-6">
-        <h1 class="text-4xl font-bold text-white mb-2">🗣️ {{ currentLanguagePair }}</h1>
-        <p class="text-white/80">语音转文本 · 文本翻译 · 语音合成</p>
+      <header class="text-center mb-4">
+        <h1 class="text-2xl font-bold text-white">🗣️ {{ currentLanguagePair }}</h1>
       </header>
 
       <!-- 主卡片 -->
-      <div class="glass rounded-3xl p-6 shadow-2xl">
+      <div class="glass rounded-2xl p-4 shadow-2xl">
         <!-- 录音控制 -->
-        <div class="flex flex-col items-center mb-6">
+        <div class="flex flex-col items-center mb-4">
           <!-- 录音按钮 -->
           <button 
             @click="startVoiceInput"
-            class="relative w-36 h-36 rounded-full transition-all shadow-xl"
+            class="relative w-28 h-28 rounded-full transition-all shadow-lg"
             :class="isRecording ? 'bg-red-500 scale-95' : 'bg-white'"
           >
-            <span class="text-6xl">{{ isRecording ? '🔴' : '🎤' }}</span>
-            <div v-if="isRecording" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full animate-ping"></div>
+            <span class="text-5xl">{{ isRecording ? '⏹️' : '🎤' }}</span>
+            <div v-if="isRecording" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-ping"></div>
           </button>
           
           <!-- 录音时间/状态 -->
@@ -258,6 +255,7 @@ const languages = [
   { id: 'cantonese', name: '粤语', region: '广东/香港', family: '粤语', isDialect: true },
   { id: 'hakka', name: '客家话', region: '梅州/惠州', family: '客家话', isDialect: true },
   { id: 'minnan', name: '闽南语', region: '福建/台湾', family: '闽南语', isDialect: true },
+  { id: 'chaoshan', name: '潮汕话', region: '广东潮汕', family: '闽南语', isDialect: true },
   { id: 'wu', name: '吴语', region: '上海/浙江', family: '吴语', isDialect: true },
   { id: 'xiang', name: '湘语', region: '湖南', family: '湘语', isDialect: true },
   { id: 'gan', name: '赣语', region: '江西', family: '赣语', isDialect: true },
@@ -276,6 +274,13 @@ const languages = [
 // 当前选择的语言
 const sourceLanguage = ref('leizhou')
 const targetLanguage = ref('mandarin')
+
+// 语言交换函数
+const swapLanguages = () => {
+  const temp = sourceLanguage.value
+  sourceLanguage.value = targetLanguage.value
+  targetLanguage.value = temp
+}
 
 // 语言名称计算属性
 const sourceLanguageName = computed(() => {
@@ -599,6 +604,83 @@ const dialectVocabulary = {
         '再见': '再见 (tsài-kiàn)',
         '晚安': '晚安 (bán-an)',
         '早安': '早安 (tsó-an)'
+      }
+    }
+  },
+  chaoshan: {
+    name: '潮汕话',
+    description: '潮汕话又称潮州话，是闽南语的一种变体，主要分布在广东省潮汕地区。',
+    vocabulary: {
+      pronouns: {
+        '我': '我 (ua)',
+        '你': '汝 (lu)',
+        '他/她/它': '伊 (i)',
+        '我们': '阮 (uang)',
+        '你们': '你们 (ning)',
+        '他们': '佗 (ta)'
+      },
+      commonWords: {
+        '吃': '食 (tsiaʔ)',
+        '喝': '饮 (am)',
+        '说': '讲 (kang)',
+        '走': '行 (kiā)',
+        '跑': '走 (tsáu)',
+        '来': '来 (lai)',
+        '去': '去 (khu)',
+        '看': '看 (khuà)',
+        '听': '听 (tiaŋ)',
+        '知道': '知 (tsai)',
+        '不知道': '不知 (m-tsai)',
+        '喜欢': '爱 (ài)',
+        '厉害': '厉害 (lai-hā)',
+        '舒服': '舒爽 (su-sáng)',
+        '辛苦': '艰苦 (kan-khu)',
+        '多少钱': '几钱 (kui-tsiě)',
+        '便宜': '相因 (sio-iŋ)',
+        '贵': '贵 (kuì)',
+        '是': '是 (sī)',
+        '不是': '不是 (m-sī)',
+        '有': '有 (ū)',
+        '没有': '无 (bō)',
+        '什么': '乜个 (mih-kai)',
+        '哪里': '块 (ti-hu)',
+        '这里': '只块 (tsi-kai)',
+        '那里': '许块 (hu-kai)',
+        '什么时候': '几时 (kui-sî)',
+        '为什么': '为什么 (uī-sím)',
+        '全部': '拢总 (láng-tsáng)',
+        '只/仅仅': '干 (ta)',
+        '已经': '已 (í)',
+        '现在': '这阵 (tsit-tsūn)',
+        '等一下': '等一下 (tán-tsiē)',
+        '太/很': '过 (kuè)',
+        '不': '勿 (m)',
+        '很/非常': '野 (iá)',
+        '不要': '勿爱 (m-ài)'
+      },
+      questionPatterns: {
+        '吃了吗': '食未 (tsia-bue)',
+        '去了吗': '去未 (khu-bue)',
+        '去了没有': '去未 (khu-bue)',
+        '你去哪里': '你去块 (lu khu ti-hu)',
+        '你在做什么': '汝在做乜 (lu tsai tsò mih)',
+        '你吃了吗': '汝食未 (lu tsia bue)'
+      },
+      timeExpressions: {
+        '今天': '今日 (kim-tsiē)',
+        '明天': '明日 (muâ-tsiē)',
+        '昨天': '昨日 (tsa-tsiē)',
+        '早上': '早起 (tsá-khí)',
+        '中午': '日昼 (jiț-tàu)',
+        '晚上': '暝 (mê)'
+      },
+      dailyExpressions: {
+        '谢谢': '感谢 (kam-siā)',
+        '对不起': '对不起 (tui-hù-khi)',
+        '没关系': '无相干 (bô-siò-kua)',
+        '再见': '再见 (tsài-kìan)',
+        '晚安': '晚安 (bán-an)',
+        '早安': '早安 (tsá-an)'
       }
     }
   },
