@@ -1396,6 +1396,10 @@ const stopVoiceInput = () => {
 
 // 开始语音输入
 const startVoiceInput = async () => {
+  // 清除之前的识别和翻译结果
+  sourceText.value = ''
+  translatedText.value = ''
+  
   // 如果正在 Web Speech，停止它
   if (isWebSpeechListening.value) {
     stopWebSpeech()
