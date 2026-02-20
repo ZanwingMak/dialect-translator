@@ -10,6 +10,10 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
+    "@capacitor/ios": "^8.1.0",
     "@vueuse/core": "^10.7.0",
     "axios": "^1.6.0",
     "openai": "^4.0.0",
