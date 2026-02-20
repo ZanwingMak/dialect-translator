@@ -6,7 +6,7 @@
         <div class="flex-1">
           <select 
             v-model="sourceLanguage"
-            class="w-full px-3 py-2 rounded-xl bg-white/20 text-white text-sm font-medium"
+            class="w-full px-3 py-2 h-10 rounded-xl bg-white/20 text-white text-sm font-medium"
           >
             <option v-for="lang in languages" :key="lang.id" :value="lang.id" class="bg-gray-800">{{ lang.name }}</option>
           </select>
@@ -17,7 +17,7 @@
         <div class="flex-1">
           <select 
             v-model="targetLanguage"
-            class="w-full px-3 py-2 rounded-xl bg-white/20 text-white text-sm font-medium"
+            class="w-full px-3 py-2 h-10 rounded-xl bg-white/20 text-white text-sm font-medium"
           >
             <option v-for="lang in languages" :key="lang.id" :value="lang.id" class="bg-gray-800">{{ lang.name }}</option>
           </select>
