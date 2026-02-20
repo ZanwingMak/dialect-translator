@@ -230,7 +230,7 @@
 
           <!-- 状态 -->
           <div class="flex items-center justify-between text-xs">
-            <span class="text-white/50">{{ providerLabel }}</span>
+            <span class="text-white/50">{{ testResult || providerLabel }}</span>
             <button 
               @click="testApiKey"
               :disabled="!config.apiKey"
