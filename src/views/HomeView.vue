@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 p-4">
     <div class="max-w-lg mx-auto">
       <!-- 语言选择器 -->
-      <div class="flex gap-2 mb-3">
+      <div class="flex gap-2 mb-2">
         <div class="flex-1">
           <select 
             v-model="sourceLanguage"
@@ -22,6 +22,15 @@
             <option v-for="lang in languages" :key="lang.id" :value="lang.id" class="bg-gray-800">{{ lang.name }}</option>
           </select>
         </div>
+      </div>
+      <!-- 自定义语言名称输入 -->
+      <div v-if="sourceLanguage === 'custom' || targetLanguage === 'custom'" class="mb-3">
+        <input 
+          v-model="config.customLanguageName"
+          type="text"
+          placeholder="输入自定义语言名称"
+          class="w-full px-3 py-2 rounded-xl bg-white/20 text-white placeholder-white/40 text-sm"
+        />
       </div>
 
       <!-- 标题 -->
@@ -317,11 +326,17 @@ const swapLanguages = () => {
 
 // 语言名称计算属性
 const sourceLanguageName = computed(() => {
+  if (sourceLanguage.value === 'custom' && config.customLanguageName) {
+    return config.customLanguageName
+  }
   const lang = languages.find(l => l.id === sourceLanguage.value)
   return lang?.name || '源语言'
 })
 
 const targetLanguageName = computed(() => {
+  if (targetLanguage.value === 'custom' && config.customLanguageName) {
+    return config.customLanguageName
+  }
   const lang = languages.find(l => l.id === targetLanguage.value)
   return lang?.name || '目标语言'
 })
@@ -1210,6 +1225,7 @@ const config = reactive({
   apiKey: '',
   translateModel: 'gpt-3.5-turbo',
   customModel: '',
+  customLanguageName: '',
   whisperModel: 'webspeech',
   ttsModel: 'tts-1',
   customBaseUrl: ''
