@@ -52,13 +52,6 @@
     </div>
     <div class="flex gap-2 mt-2">
       <button 
-        @click="$emit('playTarget')"
-        :disabled="!targetAudioUrl"
-        class="flex-1 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 disabled:opacity-40"
-      >
-        🔊 播放
-      </button>
-      <button 
         @click="$emit('copyTarget')"
         class="flex-1 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20"
       >
@@ -76,7 +69,8 @@ defineProps({
   targetLanguageName: String,
   sourceAudioUrl: String,
   targetAudioUrl: String,
-  isTranslating: Boolean
+  isTranslating: Boolean,
+  whisperModel: String
 })
 
 defineEmits([
@@ -85,7 +79,6 @@ defineEmits([
   'playSource', 
   'copySource',
   'pasteSource',
-  'playTarget',
   'copyTarget'
 ])
 </script>

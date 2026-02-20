@@ -35,11 +35,11 @@
           :sourceAudioUrl="sourceAudioUrl"
           :targetAudioUrl="targetAudioUrl"
           :isTranslating="isTranslating"
+          :whisperModel="config.whisperModel"
           @translate="translateText(sourceText)"
           @playSource="playSourceVoice"
           @copySource="copyText(sourceText)"
           @pasteSource="pasteText"
-          @playTarget="playTargetVoice"
           @copyTarget="copyText(translatedText)"
         />
       </div>
@@ -651,6 +651,10 @@ const generateSpeech = async (text) => {
 
 // ====== 播放 & 复制 ======
 const playSourceVoice = () => {
+  if (config.whisperModel === 'webspeech') {
+    alert('浏览器语音识别模式下无法播放录音，请使用 Whisper 模式')
+    return
+  }
   sourceAudio.value?.play()
 }
 
