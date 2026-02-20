@@ -35,9 +35,9 @@
         <div class="flex flex-col items-center mb-4">
           <!-- 录音按钮 -->
           <button 
-            @click="startVoiceInput"
+            @click="isRecording || isWebSpeechListening ? stopVoiceInput() : startVoiceInput()"
             class="relative w-28 h-28 rounded-full transition-all shadow-lg"
-            :class="isRecording ? 'bg-red-500 scale-95' : 'bg-white'"
+            :class="isRecording || isWebSpeechListening ? 'bg-red-500 scale-95' : 'bg-white'"
           >
             <span class="text-5xl">{{ isRecording ? '⏸️' : '🎤' }}</span>
             <div v-if="isRecording" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-ping"></div>
@@ -1371,6 +1371,16 @@ const formatTime = (timestamp) => {
 const getBaseUrl = () => {
   if (config.provider === 'custom') return config.customBaseUrl || ''
   return providers[config.provider]?.baseUrl || ''
+}
+
+// 停止语音输入
+const stopVoiceInput = () => {
+  if (isWebSpeechListening.value) {
+    stopWebSpeech()
+  }
+  if (isRecording.value) {
+    stopRecording()
+  }
 }
 
 // 开始语音输入
