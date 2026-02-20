@@ -194,6 +194,18 @@
             />
           </div>
 
+          <!-- 自定义 API 地址 -->
+          <div v-if="config.provider === 'custom'">
+            <label class="text-white/70 text-sm block mb-2">API 地址</label>
+            <input 
+              v-model="config.customBaseUrl"
+              type="text"
+              placeholder="https://api.example.com/v1/chat/completions"
+              class="w-full px-3 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 text-sm"
+            />
+          </div>
+          </div>
+
           <!-- 翻译模型 -->
           <div class="grid grid-cols-2 gap-2">
             <div>
