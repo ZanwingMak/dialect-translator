@@ -226,6 +226,7 @@
                 class="w-full px-2 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 text-xs"
               />
             </div>
+            <!-- 语音识别 - 始终显示 -->
             <div v-else>
               <label class="text-white/70 text-xs block mb-1">语音识别</label>
               <select 
@@ -236,6 +237,17 @@
                 <option value="whisper-1">Whisper</option>
               </select>
             </div>
+          </div>
+          <!-- 语音识别 - 自定义模型时显示在下方 -->
+          <div v-if="config.translateModel === 'custom'" class="mt-2">
+            <label class="text-white/70 text-xs block mb-1">语音识别</label>
+            <select 
+              v-model="config.whisperModel"
+              class="w-full px-2 py-2 rounded-lg bg-white/10 text-white text-xs"
+            >
+              <option value="webspeech">浏览器</option>
+              <option value="whisper-1">Whisper</option>
+            </select>
           </div>
 
           <!-- 状态 -->
