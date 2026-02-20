@@ -1312,7 +1312,7 @@ onMounted(() => {
     } catch (e) {}
   }
   
-  const savedHistory = localStorage.getItem('leizhou_history')
+  const savedHistory = localStorage.getItem('dialect_history')
   if (savedHistory) {
     try {
       history.push(...JSON.parse(savedHistory))
@@ -1708,7 +1708,7 @@ const translateText = async (text) => {
       timestamp: Date.now() 
     })
     if (history.length > 50) history.pop()
-    localStorage.setItem('leizhou_history', JSON.stringify(history))
+    localStorage.setItem('dialect_history', JSON.stringify(history))
     
     await generateSpeech(translatedText.value)
     
@@ -1858,9 +1858,9 @@ const loadHistory = (item) => {
 }
 
 const clearHistory = () => {
-  if (confirm('清空 all history?')) {
+  if (confirm('确定要清空所有历史记录吗？')) {
     history.splice(0)
-    localStorage.removeItem('leizhou_history')
+    localStorage.removeItem('dialect_history')
   }
 }
 
