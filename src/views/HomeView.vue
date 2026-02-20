@@ -24,11 +24,19 @@
         </div>
       </div>
       <!-- 自定义语言名称输入 -->
-      <div v-if="sourceLanguage === 'custom' || targetLanguage === 'custom'" class="mb-3">
+      <div v-if="sourceLanguage === 'custom' || targetLanguage === 'custom'" class="mb-3 space-y-2">
         <input 
+          v-if="sourceLanguage === 'custom'"
           v-model="config.customLanguageName"
           type="text"
-          placeholder="输入自定义语言名称"
+          :placeholder="`源语言名称`"
+          class="w-full px-3 py-2 rounded-xl bg-white/20 text-white placeholder-white/40 text-sm"
+        />
+        <input 
+          v-if="targetLanguage === 'custom'"
+          v-model="config.customTargetLanguageName"
+          type="text"
+          :placeholder="`目标语言名称`"
           class="w-full px-3 py-2 rounded-xl bg-white/20 text-white placeholder-white/40 text-sm"
         />
       </div>
@@ -334,8 +342,8 @@ const sourceLanguageName = computed(() => {
 })
 
 const targetLanguageName = computed(() => {
-  if (targetLanguage.value === 'custom' && config.customLanguageName) {
-    return config.customLanguageName
+  if (targetLanguage.value === 'custom' && config.customTargetLanguageName) {
+    return config.customTargetLanguageName
   }
   const lang = languages.find(l => l.id === targetLanguage.value)
   return lang?.name || '目标语言'
@@ -1226,6 +1234,7 @@ const config = reactive({
   translateModel: 'gpt-3.5-turbo',
   customModel: '',
   customLanguageName: '',
+  customTargetLanguageName: '',
   whisperModel: 'webspeech',
   ttsModel: 'tts-1',
   customBaseUrl: ''
