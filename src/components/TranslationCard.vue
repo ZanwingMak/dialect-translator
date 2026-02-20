@@ -20,6 +20,12 @@
         🔊 播放
       </button>
       <button 
+        @click="$emit('pasteSource')"
+        class="flex-1 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20"
+      >
+        📥 粘贴
+      </button>
+      <button 
         @click="$emit('copySource')"
         class="flex-1 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20"
       >
@@ -78,6 +84,7 @@ defineEmits([
   'translate', 
   'playSource', 
   'copySource',
+  'pasteSource',
   'playTarget',
   'copyTarget'
 ])

@@ -38,6 +38,7 @@
           @translate="translateText(sourceText)"
           @playSource="playSourceVoice"
           @copySource="copyText(sourceText)"
+          @pasteSource="pasteText"
           @playTarget="playTargetVoice"
           @copyTarget="copyText(translatedText)"
         />
@@ -658,6 +659,15 @@ const copyText = (text) => {
   navigator.clipboard.writeText(text).then(() => {
     alert('已复制！')
   })
+}
+
+const pasteText = async () => {
+  try {
+    const text = await navigator.clipboard.readText()
+    sourceText.value = text
+  } catch (error) {
+    alert('粘贴失败，请检查权限')
+  }
 }
 
 const loadHistory = (item) => {
