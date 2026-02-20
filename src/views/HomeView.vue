@@ -42,7 +42,7 @@
             class="relative w-36 h-36 rounded-full transition-all shadow-xl"
             :class="isRecording ? 'bg-red-500 scale-95' : 'bg-white'"
           >
-            <span class="text-6xl">{{ isRecording ? '⏹️' : '🎤' }}</span>
+            <span class="text-6xl">{{ isRecording ? '🔴' : '🎤' }}</span>
             <div v-if="isRecording" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full animate-ping"></div>
           </button>
           
@@ -253,13 +253,24 @@ import { ref, reactive, watch, onUnmounted, onMounted, nextTick, computed } from
 
 // 语言配置
 const languages = [
-  { id: 'leizhou', name: '雷州话', isDialect: true },
-  { id: 'cantonese', name: '粤语', isDialect: true },
-  { id: 'hakka', name: '客家话', isDialect: true },
-  { id: 'minnan', name: '闽南语', isDialect: true },
-  { id: 'wu', name: '吴语', isDialect: true },
-  { id: 'custom', name: '自定义', isDialect: true },
-  { id: 'mandarin', name: '普通话', isDialect: false }
+  // 主流方言
+  { id: 'leizhou', name: '雷州话', region: '广东雷州', family: '闽南语', isDialect: true },
+  { id: 'cantonese', name: '粤语', region: '广东/香港', family: '粤语', isDialect: true },
+  { id: 'hakka', name: '客家话', region: '梅州/惠州', family: '客家话', isDialect: true },
+  { id: 'minnan', name: '闽南语', region: '福建/台湾', family: '闽南语', isDialect: true },
+  { id: 'wu', name: '吴语', region: '上海/浙江', family: '吴语', isDialect: true },
+  { id: 'xiang', name: '湘语', region: '湖南', family: '湘语', isDialect: true },
+  { id: 'gan', name: '赣语', region: '江西', family: '赣语', isDialect: true },
+  { id: 'jinhui', name: '江淮话', region: '江苏/安徽', family: '官话', isDialect: true },
+  { id: 'jin', name: '晋语', region: '山西', family: '晋语', isDialect: true },
+  { id: 'huizhou', name: '徽语', region: '安徽', family: '徽语', isDialect: true },
+  { id: 'dongbei', name: '东北话', region: '东北', family: '官话', isDialect: true },
+  { id: 'beijing', name: '北京话', region: '北京', family: '官话', isDialect: true },
+  { id: 'shandong', name: '山东话', region: '山东', family: '官话', isDialect: true },
+  { id: 'sichuan', name: '四川话', region: '四川', family: '官话', isDialect: true },
+  // 标准语言
+  { id: 'mandarin', name: '普通话', region: '全国', family: '官话', isDialect: false },
+  { id: 'custom', name: '自定义', region: '', family: '', isDialect: true }
 ]
 
 // 当前选择的语言
@@ -665,6 +676,384 @@ const dialectVocabulary = {
         '再见': '再会 (ze we)',
         '晚安': '夜早点困 (ye zao di kun)',
         '早安': '早安 (zao e)'
+      }
+    }
+  },
+  xiang: {
+    name: '湘语',
+    description: '湘语主要分布在湖南省地区。',
+    vocabulary: {
+      pronouns: {
+        '我': '我 (ngo)',
+        '你': '你 (ni)',
+        '他/她/它': '佗 (ta)',
+        '我们': '我们 (ngo men)',
+        '你们': '你们 (ni men)',
+        '他们': '佗咯 (ta lo)'
+      },
+      commonWords: {
+        '吃': '恰 (qa)',
+        '喝': '喝 (ho)',
+        '说': '话 (wa)',
+        '走': '行 (han)',
+        '跑': '跑 (bao)',
+        '来': '来 (lai)',
+        '去': '去 (qi)',
+        '看': '看 (kan)',
+        '听': '听 (tin)',
+        '知道': '晓嘎 (xiao ga)',
+        '不知道': '不晓 (bu xiao)',
+        '喜欢': '喜欢 (xi huan)',
+        '厉害': '扎实 (za shi)',
+        '舒服': '舒服 (su fu)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '好多钱 (duo shao qian)',
+        '便宜': '便宜 (bian yi)',
+        '贵': '贵 (gui)',
+        '是': '是 (si)',
+        '不是': '不是 (bu si)',
+        '有': '有 (you)',
+        '没有': '冒有 (mao you)',
+        '什么': '么子 (me zi)',
+        '哪里': '哪里 (na li)',
+        '这里': '咯里 (lo li)',
+        '那里': '那里 (la li)'
+      }
+    }
+  },
+  gan: {
+    name: '赣语',
+    description: '赣语主要分布在江西省地区。',
+    vocabulary: {
+      pronouns: {
+        '我': '偶 (ngau)',
+        '你': '你 (ni)',
+        '佢': '佢 (ki)',
+        '我们': '偶里 (ngau li)',
+        '你们': '你里 (ni li)',
+        '他们': '佢里 (ki li)'
+      },
+      commonWords: {
+        '吃': '食 (shi)',
+        '喝': '噶 (ga)',
+        '说': '话 (wa)',
+        '走': '行 (hang)',
+        '跑': '走 (zou)',
+        '来': '来 (lai)',
+        '去': '去 (qu)',
+        '看': '看 (kan)',
+        '听': '听 (tin)',
+        '知道': '晓 (xiao)',
+        '不知道': '不晓 (bu xiao)',
+        '喜欢': '欢喜 (foan xi)',
+        '厉害': '厉害 (li hai)',
+        '舒服': '舒服 (su fu)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '几多钱 (ji duo qian)',
+        '便宜': '便宜 (pian yi)',
+        '贵': '贵 (gui)',
+        '是': '系 (hai)',
+        '不是': '不系 (bu hai)',
+        '有': '有 (you)',
+        '没有': '冒 (mao)',
+        '什么': '么个 (shi me go)',
+        '哪里': '哪里 (na li)',
+        '这里': '咯里 (ge li)',
+        '那里': '那里 (he li)'
+      }
+    }
+  },
+  jinhui: {
+    name: '江淮话',
+    description: '江淮话主要分布在江苏、安徽中部地区。',
+    vocabulary: {
+      pronouns: {
+        '我': '我 (wo)',
+        '你': '你 (ni)',
+        '他/她/它': '他 (ta)',
+        '我们': '我们 (wo men)',
+        '你们': '你们 (ni men)',
+        '他们': '他们 (ta men)'
+      },
+      commonWords: {
+        '吃': '吃 (qi)',
+        '喝': '喝 (he)',
+        '说': '说 (shuo)',
+        '走': '走 (zou)',
+        '跑': '跑 (pao)',
+        '来': '来 (lai)',
+        '去': '去 (qu)',
+        '看': '看 (kan)',
+        '听': '听 (tin)',
+        '知道': '晓嘎 (xiao ga)',
+        '不知道': '不晓 (bu xiao)',
+        '喜欢': '欢喜 (huan xi)',
+        '厉害': '来斯 (lai si)',
+        '舒服': '舒服 (shu fu)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '多少钱 (duo shao qian)',
+        '便宜': '便宜 (bian yi)',
+        '贵': '贵 (gui)',
+        '是': '是 (si)',
+        '不是': '不是 (bu si)',
+        '有': '有 (you)',
+        '没有': '没得 (mei de)',
+        '什么': '什尼 (shi ni)',
+        '哪里': '哪块 (na kuai)',
+        '这里': '这块 (zhe kuai)',
+        '那里': '那块 (na kuai)'
+      }
+    }
+  },
+  jin: {
+    name: '晋语',
+    description: '晋语主要分布在山西省及内蒙古、河北部分地区。',
+    vocabulary: {
+      pronouns: {
+        '我': '我 (nga)',
+        '你': '你 (ni)',
+        '他/她/它': '他 (ta)',
+        '我们': '我们 (nga men)',
+        '你们': '你们 (ni men)',
+        '他们': '他们 (ta men)'
+      },
+      commonWords: {
+        '吃': '吃 (qie)',
+        '喝': '喝 (he)',
+        '说': '说 (shuo)',
+        '走': '走 (zou)',
+        '跑': '跑 (pao)',
+        '来': '来 (lai)',
+        '去': '去 (qu)',
+        '看': '看 (kan)',
+        '听': '听 (tin)',
+        '知道': '知道 (zi dao)',
+        '不知道': '不机 (bu ji)',
+        '喜欢': '待见 (dai jian)',
+        '厉害': '厉害 (li hai)',
+        '舒服': '舒服 (shu fu)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '几钱 (ji qian)',
+        '便宜': '便宜 (pian yi)',
+        '贵': '贵 (gui)',
+        '是': '是 (si)',
+        '不是': '不是 (bu si)',
+        '有': '有 (you)',
+        '没有': '没 (mei)',
+        '什么': '甚 (shi)',
+        '哪里': '哪 (na)',
+        '这里': '这 (zhe)',
+        '那里': '那 (na)'
+      }
+    }
+  },
+  huizhou: {
+    name: '徽语',
+    description: '徽语主要分布在安徽省南部及江西、浙江部分地区。',
+    vocabulary: {
+      pronouns: {
+        '我': '我 (e)',
+        '你': '你 (n)',
+        '他/她/它': '渠 (ke)',
+        '我们': '我俫 (e le)',
+        '你们': '你俫 (n le)',
+        '他们': '渠俫 (ke le)'
+      },
+      commonWords: {
+        '吃': '吃 (qie)',
+        '喝': '吃 (qie)',
+        '说': '话 (wo)',
+        '走': '行 (han)',
+        '跑': '走 (zou)',
+        '来': '来 (lai)',
+        '去': '去 (qu)',
+        '看': '看 (kan)',
+        '听': '听 (tin)',
+        '知道': '晓 (xiao)',
+        '不知道': '弗晓 (fe xiao)',
+        '喜欢': '欢喜 (ho xi)',
+        '厉害': '厉害 (li hai)',
+        '舒服': '舒服 (shu fu)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '几钿 (ji die)',
+        '便宜': '便意 (bian yi)',
+        '贵': '贵 (gui)',
+        '是': '是 (si)',
+        '不是': '弗是 (fe si)',
+        '有': '有 (you)',
+        '没有': '呒没 (m mo)',
+        '什么': '什个 (shi go)',
+        '哪里': '哪坦 (na tan)',
+        '这里': '这块 (ze kai)',
+        '那里': '那块 (ke kai)'
+      }
+    }
+  },
+  dongbei: {
+    name: '东北话',
+    description: '东北话主要分布在辽宁、吉林、黑龙江三省。',
+    vocabulary: {
+      pronouns: {
+        '我': '我 (wo)',
+        '你': '你 (ni)',
+        '他/她/它': '他 (ta)',
+        '我们': '咱们 (zan men)',
+        '你们': '你们 (ni men)',
+        '他们': '他们 (ta men)'
+      },
+      commonWords: {
+        '吃': '吃 (chi)',
+        '喝': '喝 (he)',
+        '说': '唠 (lao)',
+        '走': '走 (zou)',
+        '跑': '蹽 (liao)',
+        '来': '来 (lai)',
+        '去': '去 (qu)',
+        '看': '看 (kan)',
+        '听': '听 (tin)',
+        '知道': '知道 (zi dao)',
+        '不知道': '不知道 (bu zi dao)',
+        '喜欢': '稀罕 (xi han)',
+        '厉害': '嘎嘎的 (ga ga de)',
+        '舒服': '得劲儿 (de jin er)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '多少钱 (duo shao qian)',
+        '便宜': '便宜 (bian yi)',
+        '贵': '贵 (gui)',
+        '是': '是 (si)',
+        '不是': '不是 (bu si)',
+        '有': '有 (you)',
+        '没有': '没有 (mei you)',
+        '什么': '啥 (sha)',
+        '哪里': '哪嘎达 (na ga da)',
+        '这里': '这嘎达 (zhe ga da)',
+        '那里': '那嘎达 (na ga da)'
+      }
+    }
+  },
+  beijing: {
+    name: '北京话',
+    description: '北京话是普通话的基础方言。',
+    vocabulary: {
+      pronouns: {
+        '我': '我 (wo)',
+        '你': '你 (ni)',
+        '他/她/它': '他 (ta)',
+        '我们': '我们 (wo men)',
+        '你们': '你们 (ni men)',
+        '他们': '他们 (ta men)'
+      },
+      commonWords: {
+        '吃': '吃 (chi)',
+        '喝': '喝 (he)',
+        '说': '说 (shuo)',
+        '走': '走 (zou)',
+        '跑': '跑 (pao)',
+        '来': '来 (lai)',
+        '去': '去 (qu)',
+        '看': '看 (kan)',
+        '听': '听 (tin)',
+        '知道': '知道 (zhi dao)',
+        '不知道': '不知道 (bu zhi dao)',
+        '喜欢': '喜欢 (xi huan)',
+        '厉害': '厉害 (li hai)',
+        '舒服': '舒服 (shu fu)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '多少钱 (duo shao qian)',
+        '便宜': '便宜 (bian yi)',
+        '贵': '贵 (gui)',
+        '是': '是 (shi)',
+        '不是': '不是 (bu shi)',
+        '有': '有 (you)',
+        '没有': '没有 (mei you)',
+        '什么': '什么 (shi me)',
+        '哪里': '哪 (na)',
+        '这里': '这 (zhe)',
+        '那里': '那 (na)'
+      }
+    }
+  },
+  shandong: {
+    name: '山东话',
+    description: '山东话主要分布在山东省地区。',
+    vocabulary: {
+      pronouns: {
+        '我': '俺 (an)',
+        '你': '你 (ni)',
+        '他/她/它': '他 (ta)',
+        '我们': '俺们 (an men)',
+        '你们': '你们 (ni men)',
+        '他们': '他们 (ta men)'
+      },
+      commonWords: {
+        '吃': '吃 (chi)',
+        '喝': '喝 (he)',
+        '说': '说 (shuo)',
+        '走': '走 (zou)',
+        '跑': '跑 (pao)',
+        '来': '来 (lai)',
+        '去': '去 (qu)',
+        '看': '看 (kan)',
+        '听': '听 (ting)',
+        '知道': '知道 (zhi dao)',
+        '不知道': '不道 (bu dao)',
+        '喜欢': '喜欢 (xi huan)',
+        '厉害': '挺厉害 (ting li hai)',
+        '舒服': '得 (dei)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '多少钱 (duo shao qian)',
+        '便宜': '便宜 (bian yi)',
+        '贵': '贵 (gui)',
+        '是': '是 (si)',
+        '不是': '不是 (bu si)',
+        '有': '有 (you)',
+        '没有': '木有 (mu you)',
+        '什么': '啥 (sha)',
+        '哪里': '哪 (na)',
+        '这里': '这 (zhe)',
+        '那里': '那 (na)'
+      }
+    }
+  },
+  sichuan: {
+    name: '四川话',
+    description: '四川话主要分布在四川省及重庆、云南、贵州部分地区。',
+    vocabulary: {
+      pronouns: {
+        '我': '我 (ngo)',
+        '你': '你 (ni)',
+        '他/她/它': '他 (ta)',
+        '我们': '我们 (ngo men)',
+        '你们': '你们 (ni men)',
+        '他们': '他们 (ta men)'
+      },
+      commonWords: {
+        '吃': '吃 (ci)',
+        '喝': '喝 (ho)',
+        '说': '说 (so)',
+        '走': '走 (zou)',
+        '跑': '跑 (pao)',
+        '来': '来 (lai)',
+        '去': '去 (qu)',
+        '看': '看 (kan)',
+        '听': '听 (tin)',
+        '知道': '知道 (zi dao)',
+        '不知道': '不晓求 (bu xiao qiu)',
+        '喜欢': '喜欢 (xi huan)',
+        '厉害': '凶 (xiong)',
+        '舒服': '舒服 (su fu)',
+        '辛苦': '辛苦 (xin ku)',
+        '多少钱': '好多钱 (duo shao qian)',
+        '便宜': '相因 (xiang yin)',
+        '贵': '贵 (gui)',
+        '是': '是 (si)',
+        '不是': '不是 (bu si)',
+        '有': '有 (you)',
+        '没有': '没有 (mei you)',
+        '什么': '啥子 (sa zi)',
+        '哪里': '哪点 (na dian)',
+        '这里': '这点 (ze dian)',
+        '那里': '那点 (na dian)'
       }
     }
   },
