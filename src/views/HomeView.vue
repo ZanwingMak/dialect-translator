@@ -116,7 +116,7 @@
       <!-- 快捷设置栏 -->
       <div class="mt-4 flex gap-2 overflow-x-auto pb-2">
         <button 
-          @click="showSettings = !showSettings"
+          @click="toggleSettings"
           class="flex-shrink-0 px-4 py-2 bg-white/20 text-white rounded-full text-sm"
         >
           ⚙️ 设置
@@ -155,8 +155,8 @@
       </div>
 
       <!-- 设置卡片 -->
-      <div class="mt-6 glass rounded-xl p-4">
-        <div @click="showSettings = !showSettings" class="flex items-center justify-between cursor-pointer">
+      <div ref="settingsRef" class="mt-6 glass rounded-xl p-4">
+        <div @click="toggleSettings" class="flex items-center justify-between cursor-pointer">
           <h3 class="text-white font-semibold">⚙️ 设置</h3>
           <span class="text-white/60">{{ showSettings ? '▼' : '▶' }}</span>
         </div>
@@ -1159,6 +1159,17 @@ const targetAudioUrl = ref(null)
 const statusMessage = ref('')
 const showSettings = ref(false)
 const testResult = ref('')
+const settingsRef = ref(null)
+
+// 切换设置显示并滚动到设置区域
+const toggleSettings = () => {
+  showSettings.value = !showSettings.value
+  if (showSettings.value) {
+    nextTick(() => {
+      settingsRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
+}
 
 // 配置
 const config = reactive({
