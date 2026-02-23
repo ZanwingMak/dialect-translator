@@ -88,6 +88,10 @@ onMounted(() => {
   try {
     // Tauri 会有 window.__TAURI__ 全局对象
     isDesktop.value = !!window.__TAURI__
+    // 桌面端默认使用 Whisper
+    if (isDesktop.value) {
+      config.whisperModel = 'whisper-1'
+    }
   } catch (e) {
     isDesktop.value = false
   }
@@ -377,9 +381,11 @@ const stopWebSpeech = () => {
 const startRecording = async () => {
   try {
     audioChunks = []
-    statusMessage.value = '录音中...'
+    statusMessage.value = '请求麦克风权限...'
     
+    // 请求麦克风权限
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    statusMessage.value = '录音中...'
     
     audioContext = new (window.AudioContext || window.webkitAudioContext)()
     if (audioContext.state === 'suspended') {
@@ -424,7 +430,7 @@ const startRecording = async () => {
     
   } catch (error) {
     statusMessage.value = ''
-    alert('无法访问麦克风，请检查权限设置')
+    alert('无法访问麦克风，请在系统设置中允许该应用使用麦克风：系统设置 > 隐私与安全性 > 麦克风')
   }
 }
 
