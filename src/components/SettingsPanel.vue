@@ -94,7 +94,7 @@
             v-model="config.whisperModel"
             class="w-full px-2 py-2 rounded-lg bg-white/10 text-white text-xs"
           >
-            <option value="webspeech">浏览器</option>
+            <option v-if="!isDesktop" value="webspeech">浏览器</option>
             <option value="whisper-1">Whisper</option>
           </select>
         </div>
@@ -106,7 +106,7 @@
           v-model="config.whisperModel"
           class="w-full px-2 py-2 rounded-lg bg-white/10 text-white text-xs"
         >
-          <option value="webspeech">浏览器</option>
+          <option v-if="!isDesktop" value="webspeech">浏览器</option>
           <option value="whisper-1">Whisper</option>
         </select>
       </div>
@@ -136,7 +136,8 @@ const props = defineProps({
   providerPlaceholder: String,
   providerLabel: String,
   testResult: String,
-  history: Array
+  history: Array,
+  isDesktop: Boolean
 })
 
 const emit = defineEmits(['update:showSettings', 'testApi', 'clearHistory'])

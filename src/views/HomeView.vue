@@ -53,6 +53,7 @@
         :providerLabel="providerLabel"
         :testResult="testResult"
         :history="history"
+        :isDesktop="isDesktop"
         @testApi="testApiKey"
         @clearHistory="clearHistory"
       />
@@ -80,6 +81,17 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue'
+
+// 检测是否在桌面端运行
+const isDesktop = ref(false)
+onMounted(() => {
+  try {
+    // Tauri 会有 window.__TAURI__ 全局对象
+    isDesktop.value = !!window.__TAURI__
+  } catch (e) {
+    isDesktop.value = false
+  }
+})
 import LanguageSelector from '../components/LanguageSelector.vue'
 import RecordingButton from '../components/RecordingButton.vue'
 import TranslationCard from '../components/TranslationCard.vue'
