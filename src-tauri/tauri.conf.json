@@ -53,7 +53,7 @@
       "identifier": "com.dialect.translator",
       "longDescription": "多语言方言翻译工具 - 语音转文本、文本翻译、语音合成",
       "macOS": {
-        "entitlements": null,
+        "entitlements": "entitlements.plist",
         "exceptionDomain": "",
         "frameworks": [],
         "providerShortName": null,
