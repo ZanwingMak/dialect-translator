@@ -1,5 +1,12 @@
 # 🗣️ 方言翻译器 (Dialect Translator)
 
+[![Deploy](https://github.com/ZanwingMak/dialect-translator/actions/workflows/deploy.yml/badge.svg)](https://github.com/ZanwingMak/dialect-translator/actions/workflows/deploy.yml)
+[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen)](https://zanwingmak.github.io/dialect-translator/)
+
+> 🌐 **在线体验**：<https://zanwingmak.github.io/dialect-translator/>
+>
+> 自带任意支持的 AI 提供商的 API Key 即可使用；所有 Key 与历史仅保存在你本地浏览器，不会上传到任何第三方服务器。
+
 一个支持多种中文方言的语音转文本、文本翻译、语音合成工具。
 
 ## ✨ 支持的语言/方言
