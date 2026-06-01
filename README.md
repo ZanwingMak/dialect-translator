@@ -58,6 +58,25 @@ npm run dev
 npm run build
 ```
 
+### 公网部署 (GitHub Pages)
+
+仓库已配置 `.github/workflows/deploy.yml`：每次 push 到 `main` 自动构建并部署到 GitHub Pages。
+
+**首次启用** 需要在仓库 → Settings → Pages → Source 选择 **GitHub Actions**。之后访问：
+
+```
+https://<user>.github.io/dialect-translator/
+```
+
+本地预览相同产物：
+
+```bash
+npm run build:pages
+npx vite preview --base=/dialect-translator/
+```
+
+> 默认 `npm run build` 仍输出根路径 `/`，保留给 Tauri / Capacitor 使用，互不影响。
+
 ### 桌面端 (macOS)
 
 ```bash
