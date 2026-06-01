@@ -1,26 +1,46 @@
 <template>
-  <!-- 录音控制 -->
-  <div class="flex flex-col items-center mb-4">
-    <!-- 录音按钮 -->
-    <button 
-      @click="handleClick"
-      class="relative w-28 h-28 rounded-full transition-all shadow-lg"
-      :class="isRecording || isWebSpeechListening ? 'bg-red-500 scale-95' : 'bg-white'"
+  <!-- 录音控制：方形圆角，配合呼吸光晕，与暗色调度协调 -->
+  <div class="flex flex-col items-center py-6 select-none">
+    <button
+      type="button"
+      @click="$emit('click')"
+      :aria-label="active ? '停止录音' : '开始录音'"
+      class="relative w-20 h-20 rounded-2xl transition-all duration-200 active:scale-95
+             flex items-center justify-center
+             focus:outline-none"
+      :class="
+        active
+          ? 'bg-accent text-ink-base animate-breathe'
+          : 'bg-ink-raised border border-ink-border text-ink-text hover:border-ink-border-strong'
+      "
     >
-      <span class="text-5xl">{{ isRecording || isWebSpeechListening ? '⏸️' : '🎤' }}</span>
-      <div v-if="isRecording || isWebSpeechListening" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-ping"></div>
+      <PhPause v-if="active" :size="28" weight="fill" />
+      <PhMicrophone v-else :size="28" weight="regular" />
     </button>
-    
-    <!-- 录音时间/状态 -->
-    <div v-if="isRecording || isWebSpeechListening" class="mt-4 text-center">
-      <span class="text-3xl font-bold text-white">{{ recordingTime }}</span>
-      <span class="text-white/60 ml-1">秒</span>
-      <p class="text-white/80 text-sm mt-1">{{ statusMessage }}</p>
+
+    <!-- 状态行：录音中显示时间 + 文案；闲置时给一句轻提示 -->
+    <div class="mt-5 h-10 flex flex-col items-center justify-center">
+      <Transition name="fade" mode="out-in">
+        <div v-if="active" key="active" class="flex flex-col items-center gap-1">
+          <div class="font-mono text-lg tracking-tight tabular-nums text-ink-text">
+            00:{{ String(recordingTime).padStart(2, '0') }}
+          </div>
+          <div class="text-xs text-ink-dim">
+            {{ statusMessage || '正在聆听…' }}
+          </div>
+        </div>
+        <div v-else key="idle" class="text-xs text-ink-muted">
+          点击麦克风开始录音
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { PhMicrophone, PhPause } from '@phosphor-icons/vue'
+
 const props = defineProps({
   isRecording: Boolean,
   isWebSpeechListening: Boolean,
@@ -28,9 +48,19 @@ const props = defineProps({
   statusMessage: String
 })
 
-const emit = defineEmits(['click'])
+defineEmits(['click'])
 
-const handleClick = () => {
-  emit('click')
-}
+// 把两种录音模式归并为一个"激活"状态，模板里只关心是否激活
+const active = computed(() => props.isRecording || props.isWebSpeechListening)
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.18s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

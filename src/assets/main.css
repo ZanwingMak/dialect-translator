@@ -2,44 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-bg: linear-gradient(135deg, #fb923c 0%, #f43f5e 50%, #ec4899 100%);
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background: var(--color-bg);
-  min-height: 100vh;
-}
-
-/* 玻璃拟态效果 */
-.glass {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* 录音按钮动画 */
-@keyframes pulse-red {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+@layer base {
+  html,
+  body {
+    @apply bg-ink-base text-ink-text;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
-  50% {
-    box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+
+  body {
+    @apply min-h-[100dvh];
+    /* 顶部一抹暖橙辉光，呼应品牌但不过载 */
+    background-image:
+      radial-gradient(900px 500px at 50% -200px, rgba(245, 158, 11, 0.12), transparent 60%),
+      radial-gradient(700px 400px at 100% 10%, rgba(244, 63, 94, 0.06), transparent 70%);
+    background-attachment: fixed;
+  }
+
+  /* 移除 iOS 默认按钮高亮 */
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* 全局聚焦圈：键盘可访问性 */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent-ring ring-offset-2 ring-offset-ink-base rounded-md;
+  }
+
+  /* 自定义滚动条：薄而隐 */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-ink-faint rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-ink-muted;
   }
 }
 
-.animate-pulse-red {
-  animation: pulse-red 1.5s infinite;
+@layer components {
+  /* 标准卡片表面 */
+  .surface {
+    @apply bg-ink-raised border border-ink-border rounded-2xl;
+  }
+
+  /* 凹陷输入区 */
+  .surface-sunken {
+    @apply bg-ink-sunken border border-ink-border rounded-xl;
+  }
+
+  /* 主按钮 */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 font-medium
+           bg-accent text-ink-base rounded-xl transition-all duration-150
+           active:scale-[0.98] hover:bg-accent-hover
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  /* 次级按钮 */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 text-ink-dim
+           bg-transparent border border-ink-border rounded-lg
+           hover:text-ink-text hover:border-ink-border-strong
+           transition-colors duration-150
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  /* 元信息标签 */
+  .label-meta {
+    @apply text-[11px] font-medium uppercase tracking-[0.08em] text-ink-muted;
+  }
 }
 
-/* 渐变按钮 */
-.btn-gradient {
-  transition: all 0.3s ease;
-}
-
-.btn-gradient:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

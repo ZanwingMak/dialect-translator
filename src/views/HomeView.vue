@@ -1,73 +1,96 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 p-4">
-    <div class="max-w-lg mx-auto">
-      <LanguageSelector
-        :languages="LANGUAGES"
-        v-model:sourceLanguage="sourceLanguage"
-        v-model:targetLanguage="targetLanguage"
-        :config="config"
-        @swap="swapLanguages"
-      />
-
-      <header class="text-center mb-4">
-        <h1 class="text-2xl font-bold text-white">🗣️ {{ currentLanguagePair }}</h1>
+  <div class="min-h-[100dvh] px-4 py-6 sm:py-10">
+    <div class="max-w-md mx-auto">
+      <!-- Header：品牌 + 主语言对 -->
+      <header class="mb-6 flex items-center justify-between px-1">
+        <div class="flex items-center gap-2">
+          <div
+            class="w-7 h-7 rounded-lg bg-accent/15 border border-accent/30
+                   flex items-center justify-center"
+          >
+            <PhSpeakerHigh :size="14" class="text-accent" weight="fill" />
+          </div>
+          <span class="text-sm font-medium tracking-tight">方言翻译器</span>
+        </div>
+        <span class="text-[11px] text-ink-muted tabular-nums">
+          {{ sourceLanguageName }} → {{ targetLanguageName }}
+        </span>
       </header>
 
-      <div class="glass rounded-2xl p-4 shadow-2xl">
-        <RecordingButton
-          :isRecording="recorder.isRecording.value"
-          :isWebSpeechListening="webSpeech.isListening.value"
-          :recordingTime="activeRecordingTime"
-          :statusMessage="activeStatusMessage"
-          @click="handleVoiceClick"
+      <!-- 主交互区 -->
+      <div class="space-y-4">
+        <LanguageSelector
+          :languages="LANGUAGES"
+          v-model:sourceLanguage="sourceLanguage"
+          v-model:targetLanguage="targetLanguage"
+          :config="config"
+          @swap="swapLanguages"
         />
 
-        <TranslationCard
-          v-model:sourceText="sourceText"
-          :translatedText="translatedText"
-          :sourceLanguageName="sourceLanguageName"
-          :targetLanguageName="targetLanguageName"
-          :sourceAudioUrl="sourceAudioUrl"
-          :targetAudioUrl="targetAudioUrl"
-          :isTranslating="translator.isTranslating.value"
-          :whisperModel="config.whisperModel"
-          @translate="handleTranslate"
-          @playSource="playSourceVoice"
-          @copySource="copyText(sourceText)"
-          @pasteSource="pasteText"
-          @copyTarget="copyText(translatedText)"
+        <div class="surface p-5 shadow-elev">
+          <RecordingButton
+            :isRecording="recorder.isRecording.value"
+            :isWebSpeechListening="webSpeech.isListening.value"
+            :recordingTime="activeRecordingTime"
+            :statusMessage="activeStatusMessage"
+            @click="handleVoiceClick"
+          />
+
+          <div class="border-t border-ink-border pt-5">
+            <TranslationCard
+              v-model:sourceText="sourceText"
+              :translatedText="translatedText"
+              :sourceLanguageName="sourceLanguageName"
+              :targetLanguageName="targetLanguageName"
+              :sourceAudioUrl="sourceAudioUrl"
+              :targetAudioUrl="targetAudioUrl"
+              :isTranslating="translator.isTranslating.value"
+              :whisperModel="config.whisperModel"
+              @translate="handleTranslate"
+              @playSource="playSourceVoice"
+              @copySource="copyText(sourceText)"
+              @pasteSource="pasteText"
+              @copyTarget="copyText(translatedText)"
+            />
+          </div>
+        </div>
+
+        <SettingsPanel
+          v-model:showSettings="showSettings"
+          :config="config"
+          :translateModels="translateModels"
+          :providerPlaceholder="providerPlaceholder"
+          :providerLabel="providerLabel"
+          :testResult="testResult"
+          :history="history"
+          :isDesktop="isDesktop"
+          @testApi="handleTestApi"
+          @clearHistory="handleClearHistory"
+        />
+
+        <HistoryPanel
+          :history="history"
+          :languages="LANGUAGES"
+          @loadHistory="loadHistory"
+          @removeHistory="removeHistory"
         />
       </div>
 
-      <SettingsPanel
-        v-model:showSettings="showSettings"
-        :config="config"
-        :translateModels="translateModels"
-        :providerPlaceholder="providerPlaceholder"
-        :providerLabel="providerLabel"
-        :testResult="testResult"
-        :history="history"
-        :isDesktop="isDesktop"
-        @testApi="handleTestApi"
-        @clearHistory="handleClearHistory"
-      />
-
-      <HistoryPanel
-        :history="history"
-        :languages="LANGUAGES"
-        @loadHistory="loadHistory"
-        @removeHistory="removeHistory"
-      />
+      <!-- 极弱署名 -->
+      <footer class="mt-10 text-center text-[11px] text-ink-faint">
+        Built with Claude · API Key 仅保存在本地浏览器
+      </footer>
     </div>
 
     <audio ref="sourceAudio" class="hidden"></audio>
     <audio ref="targetAudio" class="hidden"></audio>
 
+    <!-- 全屏波形动画：录音时铺底 -->
     <canvas
       v-if="recorder.isRecording.value"
       ref="waveCanvas"
       class="fixed inset-0 pointer-events-none z-0"
-      style="opacity: 0.3;"
+      style="opacity: 0.18; mix-blend-mode: screen;"
     ></canvas>
 
     <Toast />
@@ -76,6 +99,8 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { PhSpeakerHigh } from '@phosphor-icons/vue'
+
 import LanguageSelector from '../components/LanguageSelector.vue'
 import RecordingButton from '../components/RecordingButton.vue'
 import TranslationCard from '../components/TranslationCard.vue'
@@ -108,7 +133,6 @@ const { synthesize } = useTTS()
 const isDesktop = ref(false)
 onMounted(() => {
   isDesktop.value = !!window.__TAURI__
-  // 桌面端不支持 Web Speech API，强制使用 Whisper
   if (isDesktop.value && config.whisperModel === 'webspeech') {
     config.whisperModel = 'whisper-1'
   }
@@ -122,7 +146,6 @@ function swapLanguages() {
   ;[sourceLanguage.value, targetLanguage.value] = [targetLanguage.value, sourceLanguage.value]
 }
 
-// 当 id === 'custom' 时优先用用户输入的名字
 const sourceLanguageName = computed(() => {
   if (sourceLanguage.value === 'custom' && config.customLanguageName) return config.customLanguageName
   return LANGUAGES.find((l) => l.id === sourceLanguage.value)?.name || '源语言'
@@ -131,7 +154,6 @@ const targetLanguageName = computed(() => {
   if (targetLanguage.value === 'custom' && config.customTargetLanguageName) return config.customTargetLanguageName
   return LANGUAGES.find((l) => l.id === targetLanguage.value)?.name || '目标语言'
 })
-const currentLanguagePair = computed(() => `${sourceLanguageName.value} → ${targetLanguageName.value}`)
 
 // ====== 提供商相关派生 ======
 const translateModels = computed(() => {
@@ -153,7 +175,6 @@ const sourceAudio = ref(null)
 const targetAudio = ref(null)
 const waveCanvas = ref(null)
 
-// 录音中两种模式只会同时激活一种，统一对外暴露当前活跃的状态
 const activeRecordingTime = computed(() =>
   recorder.isRecording.value ? recorder.recordingTime.value : webSpeech.recordingTime.value
 )
@@ -161,7 +182,7 @@ const activeStatusMessage = computed(() =>
   recorder.isRecording.value ? recorder.statusMessage.value : webSpeech.statusMessage.value
 )
 
-// ====== 资源释放：组件卸载 & 切换录音前回收旧 ObjectURL ======
+// ====== 资源回收 ======
 function revokeUrl(refObj) {
   if (refObj.value) {
     try { URL.revokeObjectURL(refObj.value) } catch {}
@@ -217,13 +238,12 @@ async function startVoiceInput() {
   }
 }
 
-// ====== Whisper 识别 ======
 async function runWhisper(blob) {
   if (!config.apiKey) {
     error('请先在设置中填入 API Key')
     return
   }
-  info('识别中...')
+  info('识别中…')
   try {
     const text = await transcribe(blob)
     sourceText.value = text
@@ -234,7 +254,6 @@ async function runWhisper(blob) {
   }
 }
 
-// ====== 翻译 ======
 async function handleTranslate() {
   const text = sourceText.value
   if (!text.trim()) return
@@ -262,7 +281,6 @@ async function handleTranslate() {
   }
 }
 
-// ====== TTS ======
 async function runTTS(text) {
   revokeUrl(targetAudioUrl)
   try {
@@ -270,12 +288,10 @@ async function runTTS(text) {
     targetAudioUrl.value = url
     if (targetAudio.value && url) targetAudio.value.src = url
   } catch (err) {
-    // TTS 失败不影响翻译流程，仅在控制台记录
     console.error('语音合成失败', err)
   }
 }
 
-// ====== 播放 / 复制 / 粘贴 ======
 function playSourceVoice() {
   if (config.whisperModel === 'webspeech') {
     info('浏览器识别模式无法回放录音，请切换到 Whisper')
@@ -314,13 +330,12 @@ function handleClearHistory() {
   }
 }
 
-// ====== 测试 API ======
 async function handleTestApi() {
   if (!config.apiKey) return
-  testResult.value = '测试中...'
+  testResult.value = '测试中…'
   try {
     const ok = await translator.testApiKey()
-    testResult.value = ok ? '成功！' : '无效'
+    testResult.value = ok ? '连接正常' : '无效'
     ok ? success('API Key 有效') : error('API Key 无效')
   } catch (err) {
     testResult.value = '失败'
@@ -328,13 +343,3 @@ async function handleTestApi() {
   }
 }
 </script>
-
-<style>
-.btn-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-.glass {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-}
-</style>
