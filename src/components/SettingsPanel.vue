@@ -24,23 +24,16 @@
     </div>
     
     <div v-if="showSettings" class="mt-4 space-y-4">
-      <!-- API 提供商选择 -->
+      <!-- API 提供商选择：从 PROVIDERS 动态生成，避免双份维护 -->
       <div>
         <label class="text-white/70 text-sm block mb-2">翻译 API</label>
-        <select 
+        <select
           v-model="config.provider"
           class="w-full px-3 py-2 rounded-lg bg-white/10 text-white text-sm"
         >
-          <option value="openai">OpenAI</option>
-          <option value="openrouter">OpenRouter</option>
-          <option value="deepseek">DeepSeek</option>
-          <option value="qwen">Tongyi Qwen</option>
-          <option value="ernie">ERNIE</option>
-          <option value="doubao">Doubao</option>
-          <option value="minimax">MiniMax</option>
-          <option value="moonshot">Kimi</option>
-          <option value="azure">Azure</option>
-          <option value="custom">自定义 API</option>
+          <option v-for="(p, id) in providers" :key="id" :value="id" class="bg-gray-800">
+            {{ p.name }}
+          </option>
         </select>
       </div>
 
@@ -127,7 +120,8 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue'
+import { ref, nextTick } from 'vue'
+import { PROVIDERS } from '../constants/providers'
 
 const props = defineProps({
   config: Object,
@@ -139,6 +133,9 @@ const props = defineProps({
   history: Array,
   isDesktop: Boolean
 })
+
+// 直接暴露给模板使用
+const providers = PROVIDERS
 
 const emit = defineEmits(['update:showSettings', 'testApi', 'clearHistory'])
 

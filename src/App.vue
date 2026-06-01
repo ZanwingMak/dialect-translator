@@ -1,13 +1,7 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <HomeView />
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-
-onMounted(() => {
-  console.log('🗣️ 方言翻译器已启动')
-})
+import HomeView from './views/HomeView.vue'
 </script>

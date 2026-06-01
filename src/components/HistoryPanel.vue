@@ -1,15 +1,15 @@
 <template>
-  <!-- 历史记录 -->
+  <!-- 历史记录列表 -->
   <div v-if="history.length > 0" class="mt-4">
     <div class="flex justify-between items-center mb-3">
       <h3 class="text-white font-semibold">📋 历史记录 ({{ history.length }})</h3>
     </div>
     <div class="space-y-2 max-h-64 overflow-y-auto pr-2">
-      <div 
-        v-for="item in history" 
+      <div
+        v-for="(item, index) in history"
         :key="item.id"
+        class="glass rounded-xl p-3 cursor-pointer hover:bg-white/20 transition-all relative group"
         @click="$emit('loadHistory', item)"
-        class="glass rounded-xl p-3 cursor-pointer hover:bg-white/20 transition-all"
       >
         <div class="flex items-center gap-2 mb-1">
           <span class="text-white/60 text-xs">{{ getLanguageName(item.sourceLang) }}</span>
@@ -19,6 +19,12 @@
         <p class="text-white text-sm">{{ item.source }}</p>
         <p class="text-white/60 text-xs mt-1 truncate">{{ item.target }}</p>
         <p class="text-white/30 text-xs mt-1">{{ formatTime(item.timestamp) }}</p>
+        <!-- 单条删除按钮：阻止冒泡避免触发加载 -->
+        <button
+          class="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/10 text-white/70 text-xs opacity-0 group-hover:opacity-100 transition"
+          @click.stop="$emit('removeHistory', index)"
+          aria-label="删除该条"
+        >✕</button>
       </div>
     </div>
   </div>
@@ -30,15 +36,16 @@ const props = defineProps({
   languages: Array
 })
 
-defineEmits(['loadHistory'])
+defineEmits(['loadHistory', 'removeHistory'])
 
-const getLanguageName = (id) => {
+// 把语言 id 转为可读名字，找不到时回退到原始 id
+function getLanguageName(id) {
   if (!id) return '未知'
-  const lang = props.languages.find(l => l.id === id)
-  return lang?.name || id
+  return props.languages.find((l) => l.id === id)?.name || id
 }
 
-const formatTime = (timestamp) => {
+// 相对时间显示：1 分钟内显示"刚刚"，1 小时内显示分钟数，否则显示日期
+function formatTime(timestamp) {
   const diff = Date.now() - timestamp
   if (diff < 60000) return '刚刚'
   if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前'

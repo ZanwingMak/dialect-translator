@@ -4,11 +4,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { resolve } from 'path'
 import fs from 'fs'
 
-// 自签名证书
-const https = {
-  key: fs.readFileSync('./key.pem'),
-  cert: fs.readFileSync('./cert.pem')
-}
+// 自签名证书可选：存在则启用 HTTPS（用于本地真机调试麦克风），缺失则降级为 HTTP
+const keyPath = resolve(__dirname, 'key.pem')
+const certPath = resolve(__dirname, 'cert.pem')
+const https =
+  fs.existsSync(keyPath) && fs.existsSync(certPath)
+    ? { key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) }
+    : undefined
 
 export default defineConfig({
   plugins: [
@@ -25,16 +27,8 @@ export default defineConfig({
         display: 'standalone',
         orientation: 'portrait',
         icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          },
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
@@ -43,14 +37,18 @@ export default defineConfig({
           }
         ]
       },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']
-      }
+      workbox: { globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'] }
     })
   ],
   resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src')
+    alias: { '@': resolve(__dirname, 'src') }
+  },
+  build: {
+    // 第三方库单独切包，便于浏览器缓存
+    rollupOptions: {
+      output: {
+        manualChunks: { vue: ['vue'] }
+      }
     }
   },
   server: {
@@ -58,8 +56,8 @@ export default defineConfig({
     host: true,
     https,
     headers: {
-      "Permissions-Policy": "microphone=(self)",
-      "Access-Control-Allow-Origin": "*"
+      'Permissions-Policy': 'microphone=(self)',
+      'Access-Control-Allow-Origin': '*'
     }
   }
 })
