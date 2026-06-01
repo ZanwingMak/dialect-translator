@@ -113,17 +113,17 @@ export function useRecorder() {
       if (!isRecording.value || !analyser) return
       rafId = requestAnimationFrame(draw)
       analyser.getByteFrequencyData(dataArray)
-      // 半透明深底，叠出拖尾
-      ctx.fillStyle = 'rgba(10, 10, 11, 0.18)'
+      // 半透明白底，叠出柔和拖尾（液态玻璃风格的浅色背景）
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.08)'
       ctx.fillRect(0, 0, width, height)
       const barWidth = (width / bufferLength) * 2.5
       let x = 0
       for (let i = 0; i < bufferLength; i++) {
         const barHeight = (dataArray[i] / 255) * height * 0.55
-        // 暖橙→淡黄渐变，呼应主题色但低饱和
+        // 暖橙→粉红渐变，呼应背景色球
         const gradient = ctx.createLinearGradient(0, height - barHeight, 0, height)
-        gradient.addColorStop(0, 'rgba(245, 158, 11, 0.85)')
-        gradient.addColorStop(1, 'rgba(251, 191, 36, 0.15)')
+        gradient.addColorStop(0, 'rgba(249, 115, 22, 0.75)')
+        gradient.addColorStop(1, 'rgba(255, 143, 171, 0.2)')
         ctx.fillStyle = gradient
         ctx.fillRect(x, height - barHeight, barWidth - 2, barHeight)
         x += barWidth

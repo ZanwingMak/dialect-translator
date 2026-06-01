@@ -3,53 +3,65 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      // 应用专属设计 token，避免在组件里散落 hex
+      // iOS 26 液态玻璃配色：以暖橙为品牌色，文字走深 stone（比纯黑柔和）
       colors: {
         ink: {
-          base: '#0a0a0b', // 主背景：略偏蓝的近黑（不用纯黑）
-          raised: '#131316', // 浮起卡片
-          sunken: '#08080a', // 凹陷（input 等）
-          border: 'rgba(255,255,255,0.06)',
-          'border-strong': 'rgba(255,255,255,0.1)',
-          text: '#fafafa',
-          dim: '#a1a1aa',
-          muted: '#52525b',
-          faint: '#3f3f46'
+          base: '#1c1917', // 主文字（stone-900）
+          dim: '#44403c', // 次要文字（stone-700）
+          muted: '#78716c', // 辅助文字（stone-500）
+          faint: '#a8a29e' // 占位 / 失活（stone-400）
         },
         accent: {
-          DEFAULT: '#f59e0b', // 暖橙：继承品牌但低饱和（amber-500）
-          hover: '#fbbf24',
-          soft: 'rgba(245,158,11,0.12)',
-          ring: 'rgba(245,158,11,0.35)'
+          DEFAULT: '#f97316', // 暖橙（orange-500）
+          hover: '#fb923c', // 悬停亮一档
+          ring: 'rgba(249,115,22,0.35)'
         },
-        danger: '#f43f5e'
+        danger: '#e11d48'
       },
       fontFamily: {
-        // Geist 通过 Google Fonts 加载；fallback 到系统字体
-        sans: ['Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        mono: ['Geist Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
+        // 优先 SF Pro（iOS/macOS 原生），其次 Geist
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"SF Pro Display"',
+          '"SF Pro Text"',
+          'Geist',
+          '"Segoe UI"',
+          'sans-serif'
+        ],
+        mono: ['"SF Mono"', '"Geist Mono"', 'ui-monospace', 'monospace']
       },
+      // 液态玻璃专属阴影：组合内白高光 + 外环暗影
       boxShadow: {
-        'glow-accent': '0 0 0 1px rgba(245,158,11,0.35), 0 0 32px -8px rgba(245,158,11,0.4)',
-        elev: '0 1px 0 rgba(255,255,255,0.04) inset, 0 12px 32px -16px rgba(0,0,0,0.6)'
+        // 主玻璃面板：上沿一道白色亮边 + 大范围柔阴影
+        'glass': '0 1px 0 0 rgba(255,255,255,0.7) inset, 0 8px 32px -8px rgba(31,18,2,0.18), 0 2px 8px -2px rgba(31,18,2,0.08)',
+        // 玻璃按钮：更轻更紧凑
+        'glass-btn': '0 1px 0 0 rgba(255,255,255,0.6) inset, 0 4px 12px -4px rgba(31,18,2,0.12)',
+        // 凸起按钮（如 CTA）：暖橙发光
+        'glow-accent': '0 1px 0 0 rgba(255,255,255,0.4) inset, 0 8px 24px -6px rgba(249,115,22,0.5)',
+        // 录音激活：暖橙强光晕
+        'pulse-accent': '0 0 0 8px rgba(249,115,22,0.18), 0 8px 32px -4px rgba(249,115,22,0.55)'
       },
       animation: {
         breathe: 'breathe 2.4s ease-in-out infinite',
-        shimmer: 'shimmer 2s linear infinite',
-        'fade-up': 'fade-up 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
+        'fade-up': 'fade-up 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+        // 背景色球缓慢漂浮
+        'float-slow': 'float 18s ease-in-out infinite',
+        'float-slower': 'float 26s ease-in-out infinite reverse'
       },
       keyframes: {
         breathe: {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(245,158,11,0.45)' },
-          '50%': { boxShadow: '0 0 0 16px rgba(245,158,11,0)' }
-        },
-        shimmer: {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' }
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(249,115,22,0.55), 0 8px 32px -4px rgba(249,115,22,0.4)' },
+          '50%': { boxShadow: '0 0 0 18px rgba(249,115,22,0), 0 8px 32px -4px rgba(249,115,22,0.5)' }
         },
         'fade-up': {
-          from: { opacity: 0, transform: 'translateY(6px)' },
+          from: { opacity: 0, transform: 'translateY(8px)' },
           to: { opacity: 1, transform: 'translateY(0)' }
+        },
+        float: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(40px, -30px) scale(1.05)' },
+          '66%': { transform: 'translate(-30px, 20px) scale(0.95)' }
         }
       }
     }

@@ -1,15 +1,14 @@
 <template>
   <div class="mt-6 space-y-3">
-    <!-- 折叠头：暗色按钮风 -->
+    <!-- 折叠头 -->
     <button
       type="button"
       ref="settingsRef"
       @click="toggleSettings"
-      class="w-full flex items-center justify-between px-4 py-3 surface
-             text-ink-text text-sm font-medium
-             hover:border-ink-border-strong transition-colors"
+      class="glass w-full flex items-center justify-between px-5 py-3.5
+             text-ink-base text-sm font-medium"
     >
-      <span class="flex items-center gap-2">
+      <span class="flex items-center gap-2.5">
         <PhGear :size="16" class="text-ink-dim" />
         设置
       </span>
@@ -20,18 +19,17 @@
       />
     </button>
 
-    <!-- 设置面板：展开时上浮 -->
+    <!-- 设置面板 -->
     <Transition name="panel">
-      <div v-if="showSettings" class="surface p-4 space-y-4">
-        <!-- API 提供商 -->
+      <div v-if="showSettings" class="glass p-5 space-y-4">
         <Field label="翻译 API">
           <div class="relative">
-            <select v-model="config.provider" class="input-base appearance-none pr-8 cursor-pointer">
+            <select v-model="config.provider" class="input-base appearance-none pr-9 cursor-pointer">
               <option
                 v-for="(p, id) in providers"
                 :key="id"
                 :value="id"
-                class="bg-ink-raised"
+                class="bg-white"
               >{{ p.name }}</option>
             </select>
             <PhCaretDown
@@ -41,7 +39,6 @@
           </div>
         </Field>
 
-        <!-- API Key -->
         <Field label="API Key">
           <input
             v-model="config.apiKey"
@@ -51,7 +48,6 @@
           />
         </Field>
 
-        <!-- 自定义 API 地址 -->
         <Field v-if="config.provider === 'custom'" label="API 地址">
           <input
             v-model="config.customBaseUrl"
@@ -61,19 +57,18 @@
           />
         </Field>
 
-        <!-- 翻译模型 + 语音识别 -->
         <div class="grid grid-cols-2 gap-3">
           <Field label="翻译模型">
             <div class="relative">
               <select
                 v-model="config.translateModel"
-                class="input-base appearance-none pr-8 cursor-pointer"
+                class="input-base appearance-none pr-9 cursor-pointer"
               >
                 <option
                   v-for="m in translateModels"
                   :key="m.value"
                   :value="m.value"
-                  class="bg-ink-raised"
+                  class="bg-white"
                 >{{ m.label }}</option>
               </select>
               <PhCaretDown
@@ -96,10 +91,10 @@
             <div class="relative">
               <select
                 v-model="config.whisperModel"
-                class="input-base appearance-none pr-8 cursor-pointer"
+                class="input-base appearance-none pr-9 cursor-pointer"
               >
-                <option v-if="!isDesktop" value="webspeech" class="bg-ink-raised">浏览器</option>
-                <option value="whisper-1" class="bg-ink-raised">Whisper</option>
+                <option v-if="!isDesktop" value="webspeech" class="bg-white">浏览器</option>
+                <option value="whisper-1" class="bg-white">Whisper</option>
               </select>
               <PhCaretDown
                 :size="12"
@@ -113,10 +108,10 @@
           <div class="relative">
             <select
               v-model="config.whisperModel"
-              class="input-base appearance-none pr-8 cursor-pointer"
+              class="input-base appearance-none pr-9 cursor-pointer"
             >
-              <option v-if="!isDesktop" value="webspeech" class="bg-ink-raised">浏览器</option>
-              <option value="whisper-1" class="bg-ink-raised">Whisper</option>
+              <option v-if="!isDesktop" value="webspeech" class="bg-white">浏览器</option>
+              <option value="whisper-1" class="bg-white">Whisper</option>
             </select>
             <PhCaretDown
               :size="12"
@@ -125,8 +120,7 @@
           </div>
         </Field>
 
-        <!-- 测试 API + 清空历史 -->
-        <div class="flex items-center justify-between pt-2 border-t border-ink-border">
+        <div class="flex items-center justify-between pt-3 border-t border-white/40">
           <span class="text-xs text-ink-muted">
             {{ testResult || providerLabel }}
           </span>
@@ -134,7 +128,7 @@
             <button
               v-if="history.length > 0"
               @click="$emit('clearHistory')"
-              class="btn-ghost text-xs px-2.5 py-1"
+              class="glass-btn text-xs px-3 py-1.5"
             >
               <PhTrash :size="12" />
               清空历史
@@ -142,7 +136,7 @@
             <button
               @click="$emit('testApi')"
               :disabled="!config.apiKey"
-              class="btn-ghost text-xs px-2.5 py-1 text-accent border-accent/30 hover:border-accent/60"
+              class="glass-btn text-xs px-3 py-1.5 text-accent"
             >
               测试连接
             </button>
@@ -174,7 +168,6 @@ const emit = defineEmits(['update:showSettings', 'testApi', 'clearHistory'])
 const providers = PROVIDERS
 const settingsRef = ref(null)
 
-// 展开时把面板滚到视口顶部，避免被键盘遮挡
 const toggleSettings = () => {
   const newVal = !props.showSettings
   emit('update:showSettings', newVal)
@@ -185,24 +178,19 @@ const toggleSettings = () => {
   }
 }
 
-// 简单的「标签 + 控件」垂直行
+// 「标签 + 控件」垂直行的极简函数式组件
 const Field = (_, { slots, attrs }) =>
   h('label', { class: 'block' }, [
-    h('span', { class: 'label-meta block mb-1.5' }, attrs.label),
+    h('span', { class: 'label-meta block mb-1.5 px-1' }, attrs.label),
     slots.default?.()
   ])
 Field.props = ['label']
 </script>
 
 <style scoped>
-.input-base {
-  @apply w-full px-3 py-2 surface-sunken text-sm text-ink-text placeholder-ink-muted
-         hover:border-ink-border-strong focus:border-accent/40 transition-colors;
-}
-
 .panel-enter-active,
 .panel-leave-active {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 }
 .panel-enter-from,
@@ -214,6 +202,6 @@ Field.props = ['label']
 .panel-enter-to,
 .panel-leave-from {
   opacity: 1;
-  max-height: 800px;
+  max-height: 900px;
 }
 </style>

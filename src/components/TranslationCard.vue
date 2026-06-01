@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-5">
-    <!-- 源语言输入 -->
+    <!-- 源语言 -->
     <section>
-      <header class="flex justify-between items-center mb-2">
+      <header class="flex justify-between items-center mb-2 px-1">
         <span class="label-meta">Source · {{ sourceLanguageName }}</span>
         <span v-if="sourceText.length > 0" class="text-[11px] text-ink-muted tabular-nums">
           {{ sourceText.length }} 字
@@ -14,26 +14,24 @@
         @input="$emit('update:sourceText', $event.target.value)"
         :placeholder="`点击麦克风录音，或直接输入${sourceLanguageName}…`"
         rows="3"
-        class="w-full p-3 surface-sunken text-ink-text placeholder-ink-muted
-               text-[15px] leading-relaxed resize-none
-               focus:border-accent/40 transition-colors"
+        class="input-base text-[15px] leading-relaxed resize-none"
       ></textarea>
 
-      <div class="flex gap-1 mt-2">
+      <div class="flex gap-2 mt-2.5">
         <button
           @click="$emit('playSource')"
           :disabled="!sourceAudioUrl"
-          class="btn-ghost text-xs px-3 py-1.5 flex-1"
+          class="glass-btn text-xs px-3 py-2 flex-1"
         >
-          <PhPlay :size="14" weight="fill" />
+          <PhPlay :size="13" weight="fill" />
           播放
         </button>
-        <button @click="$emit('pasteSource')" class="btn-ghost text-xs px-3 py-1.5 flex-1">
-          <PhClipboardText :size="14" />
+        <button @click="$emit('pasteSource')" class="glass-btn text-xs px-3 py-2 flex-1">
+          <PhClipboardText :size="13" />
           粘贴
         </button>
-        <button @click="$emit('copySource')" class="btn-ghost text-xs px-3 py-1.5 flex-1">
-          <PhCopy :size="14" />
+        <button @click="$emit('copySource')" class="glass-btn text-xs px-3 py-2 flex-1">
+          <PhCopy :size="13" />
           复制
         </button>
       </div>
@@ -55,27 +53,26 @@
       </template>
     </button>
 
-    <!-- 翻译结果（出现时淡入上浮） -->
+    <!-- 翻译结果（淡入上浮） -->
     <Transition name="result">
-      <section v-if="translatedText" class="animate-fade-up">
-        <header class="flex justify-between items-center mb-2">
+      <section v-if="translatedText">
+        <header class="flex justify-between items-center mb-2 px-1">
           <span class="label-meta">Result · {{ targetLanguageName }}</span>
         </header>
 
-        <div class="p-4 surface relative overflow-hidden">
-          <!-- 左边一条暖色高光，区分源/译两区 -->
+        <div class="glass-inset relative overflow-hidden p-4">
           <span
-            class="absolute left-0 top-3 bottom-3 w-0.5 bg-accent/60 rounded-full"
+            class="absolute left-0 top-3 bottom-3 w-[3px] bg-accent rounded-full"
             aria-hidden="true"
           ></span>
-          <p class="text-[15px] leading-relaxed text-ink-text pl-3">
+          <p class="text-[15px] leading-relaxed text-ink-base pl-3">
             {{ translatedText }}
           </p>
         </div>
 
-        <div class="mt-2">
-          <button @click="$emit('copyTarget')" class="btn-ghost text-xs px-3 py-1.5 w-full">
-            <PhCopy :size="14" />
+        <div class="mt-2.5">
+          <button @click="$emit('copyTarget')" class="glass-btn text-xs px-3 py-2 w-full">
+            <PhCopy :size="13" />
             复制结果
           </button>
         </div>

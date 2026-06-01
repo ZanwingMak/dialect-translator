@@ -5,7 +5,7 @@
 @layer base {
   html,
   body {
-    @apply bg-ink-base text-ink-text;
+    color: theme('colors.ink.base');
     font-feature-settings: 'cv11', 'ss01', 'ss03';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -14,67 +14,86 @@
 
   body {
     @apply min-h-[100dvh];
-    /* 顶部一抹暖橙辉光，呼应品牌但不过载 */
-    background-image:
-      radial-gradient(900px 500px at 50% -200px, rgba(245, 158, 11, 0.12), transparent 60%),
-      radial-gradient(700px 400px at 100% 10%, rgba(244, 63, 94, 0.06), transparent 70%);
+    /* iOS 26 风格暖色渐变底，多层 radial 模拟壁纸 */
+    background:
+      radial-gradient(120% 80% at 80% 0%, #ffd1a8 0%, transparent 55%),
+      radial-gradient(120% 80% at 20% 30%, #ffb4c1 0%, transparent 60%),
+      radial-gradient(100% 80% at 50% 100%, #fbbf77 0%, transparent 55%),
+      linear-gradient(180deg, #fff4e0 0%, #ffe2d4 60%, #ffd0c4 100%);
     background-attachment: fixed;
   }
 
-  /* 移除 iOS 默认按钮高亮 */
   button {
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* 全局聚焦圈：键盘可访问性 */
   :focus-visible {
-    @apply outline-none ring-2 ring-accent-ring ring-offset-2 ring-offset-ink-base rounded-md;
+    @apply outline-none ring-2 ring-accent-ring ring-offset-2 rounded-md;
+    --tw-ring-offset-color: transparent;
   }
 
-  /* 自定义滚动条：薄而隐 */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-ink-faint rounded-full;
+    @apply bg-black/15 rounded-full;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-ink-muted;
+    @apply bg-black/25;
   }
 }
 
 @layer components {
-  /* 标准卡片表面 */
-  .surface {
-    @apply bg-ink-raised border border-ink-border rounded-2xl;
+  /* 主液态玻璃面板：高模糊 + 高饱和（让背后颜色更鲜艳） */
+  .glass {
+    @apply bg-white/55 border border-white/60 rounded-3xl;
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    box-shadow: theme('boxShadow.glass');
   }
 
-  /* 凹陷输入区 */
-  .surface-sunken {
-    @apply bg-ink-sunken border border-ink-border rounded-xl;
+  /* 较弱的玻璃，用于嵌套（如输入框） */
+  .glass-inset {
+    @apply bg-white/40 border border-white/50 rounded-2xl;
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.5) inset;
   }
 
-  /* 主按钮 */
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 font-medium
-           bg-accent text-ink-base rounded-xl transition-all duration-150
-           active:scale-[0.98] hover:bg-accent-hover
+  /* 玻璃按钮（次级操作） */
+  .glass-btn {
+    @apply inline-flex items-center justify-center gap-1.5
+           bg-white/55 border border-white/60 rounded-full
+           text-ink-base font-medium transition-all duration-150
+           active:scale-[0.97] hover:bg-white/70
            disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: theme('boxShadow.glass-btn');
   }
 
-  /* 次级按钮 */
-  .btn-ghost {
-    @apply inline-flex items-center justify-center gap-1.5 text-ink-dim
-           bg-transparent border border-ink-border rounded-lg
-           hover:text-ink-text hover:border-ink-border-strong
-           transition-colors duration-150
-           disabled:opacity-40 disabled:cursor-not-allowed;
+  /* 主 CTA：暖橙实色 + 玻璃光感 */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 font-semibold text-white
+           bg-accent rounded-full transition-all duration-150
+           active:scale-[0.97] hover:bg-accent-hover
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
+    box-shadow: theme('boxShadow.glow-accent');
   }
 
   /* 元信息标签 */
   .label-meta {
     @apply text-[11px] font-medium uppercase tracking-[0.08em] text-ink-muted;
+  }
+
+  /* 输入控件统一外观 */
+  .input-base {
+    @apply w-full px-3.5 py-2.5 rounded-xl text-sm text-ink-base placeholder-ink-faint
+           bg-white/45 border border-white/55
+           focus:bg-white/65 focus:border-accent/50 transition-colors;
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
   }
 }
 

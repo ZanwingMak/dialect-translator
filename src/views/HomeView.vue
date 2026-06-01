@@ -1,18 +1,34 @@
 <template>
-  <div class="min-h-[100dvh] px-4 py-6 sm:py-10">
-    <div class="max-w-md mx-auto">
-      <!-- Header：品牌 + 主语言对 -->
+  <div class="relative min-h-[100dvh] px-4 py-6 sm:py-10 overflow-hidden">
+    <!-- 背景浮动色球：固定位置缓慢漂浮，营造壁纸感 -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+      <div
+        class="absolute -top-20 -left-16 w-[420px] h-[420px] rounded-full opacity-70 blur-3xl animate-float-slow"
+        style="background: radial-gradient(circle, #ffb88c 0%, transparent 70%);"
+      ></div>
+      <div
+        class="absolute top-1/3 -right-24 w-[460px] h-[460px] rounded-full opacity-60 blur-3xl animate-float-slower"
+        style="background: radial-gradient(circle, #ff8fab 0%, transparent 70%);"
+      ></div>
+      <div
+        class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] rounded-full opacity-65 blur-3xl animate-float-slow"
+        style="background: radial-gradient(circle, #fcd34d 0%, transparent 70%);"
+      ></div>
+    </div>
+
+    <div class="relative max-w-md mx-auto">
+      <!-- Header -->
       <header class="mb-6 flex items-center justify-between px-1">
         <div class="flex items-center gap-2">
           <div
-            class="w-7 h-7 rounded-lg bg-accent/15 border border-accent/30
-                   flex items-center justify-center"
+            class="w-8 h-8 rounded-2xl flex items-center justify-center"
+            style="background: linear-gradient(135deg, #fb923c 0%, #f97316 100%); box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 4px 12px -2px rgba(249,115,22,0.4);"
           >
-            <PhSpeakerHigh :size="14" class="text-accent" weight="fill" />
+            <PhSpeakerHigh :size="16" class="text-white" weight="fill" />
           </div>
-          <span class="text-sm font-medium tracking-tight">方言翻译器</span>
+          <span class="text-sm font-semibold tracking-tight text-ink-base">方言翻译器</span>
         </div>
-        <span class="text-[11px] text-ink-muted tabular-nums">
+        <span class="text-[11px] text-ink-muted tabular-nums font-medium">
           {{ sourceLanguageName }} → {{ targetLanguageName }}
         </span>
       </header>
@@ -27,7 +43,7 @@
           @swap="swapLanguages"
         />
 
-        <div class="surface p-5 shadow-elev">
+        <div class="glass p-5">
           <RecordingButton
             :isRecording="recorder.isRecording.value"
             :isWebSpeechListening="webSpeech.isListening.value"
@@ -36,7 +52,7 @@
             @click="handleVoiceClick"
           />
 
-          <div class="border-t border-ink-border pt-5">
+          <div class="border-t border-white/40 pt-5">
             <TranslationCard
               v-model:sourceText="sourceText"
               :translatedText="translatedText"
@@ -76,8 +92,7 @@
         />
       </div>
 
-      <!-- 极弱署名 -->
-      <footer class="mt-10 text-center text-[11px] text-ink-faint">
+      <footer class="mt-10 text-center text-[11px] text-ink-muted">
         Built with Claude · API Key 仅保存在本地浏览器
       </footer>
     </div>
@@ -85,12 +100,11 @@
     <audio ref="sourceAudio" class="hidden"></audio>
     <audio ref="targetAudio" class="hidden"></audio>
 
-    <!-- 全屏波形动画：录音时铺底 -->
     <canvas
       v-if="recorder.isRecording.value"
       ref="waveCanvas"
       class="fixed inset-0 pointer-events-none z-0"
-      style="opacity: 0.18; mix-blend-mode: screen;"
+      style="opacity: 0.32; mix-blend-mode: multiply;"
     ></canvas>
 
     <Toast />
@@ -119,7 +133,6 @@ import { useWhisper } from '../composables/useWhisper'
 import { useTranslator } from '../composables/useTranslator'
 import { useTTS } from '../composables/useTTS'
 
-// ====== 全局状态 ======
 const { config } = useConfig()
 const { history, addHistory, clearHistory, removeHistory } = useHistory()
 const { info, success, error } = useToast()
@@ -129,7 +142,6 @@ const { transcribe } = useWhisper()
 const translator = useTranslator()
 const { synthesize } = useTTS()
 
-// ====== 桌面端检测 ======
 const isDesktop = ref(false)
 onMounted(() => {
   isDesktop.value = !!window.__TAURI__
@@ -138,7 +150,6 @@ onMounted(() => {
   }
 })
 
-// ====== 语言选择 ======
 const sourceLanguage = ref('leizhou')
 const targetLanguage = ref('mandarin')
 
@@ -155,7 +166,6 @@ const targetLanguageName = computed(() => {
   return LANGUAGES.find((l) => l.id === targetLanguage.value)?.name || '目标语言'
 })
 
-// ====== 提供商相关派生 ======
 const translateModels = computed(() => {
   const models = MODEL_OPTIONS[config.provider] || [{ label: 'Default', value: 'default' }]
   return [...models, { label: '自定义', value: 'custom' }]
@@ -163,7 +173,6 @@ const translateModels = computed(() => {
 const providerPlaceholder = computed(() => PROVIDERS[config.provider]?.placeholder || 'API Key')
 const providerLabel = computed(() => PROVIDERS[config.provider]?.name || '')
 
-// ====== 文本与音频状态 ======
 const sourceText = ref('')
 const translatedText = ref('')
 const sourceAudioUrl = ref(null)
@@ -182,7 +191,6 @@ const activeStatusMessage = computed(() =>
   recorder.isRecording.value ? recorder.statusMessage.value : webSpeech.statusMessage.value
 )
 
-// ====== 资源回收 ======
 function revokeUrl(refObj) {
   if (refObj.value) {
     try { URL.revokeObjectURL(refObj.value) } catch {}
@@ -197,7 +205,6 @@ onUnmounted(() => {
   revokeUrl(targetAudioUrl)
 })
 
-// ====== 录音入口 ======
 function handleVoiceClick() {
   if (recorder.isRecording.value || webSpeech.isListening.value) {
     if (recorder.isRecording.value) recorder.stop()
