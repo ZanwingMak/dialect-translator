@@ -76,39 +76,39 @@ npx cap open ios    # 用 Xcode 打开
 ### 海外
 | 提供商 | 代表模型 |
 |--------|------|
-| OpenAI | GPT-4o / GPT-4o-mini / GPT-3.5 |
-| Anthropic Claude | Claude Sonnet 4.5 / Opus 4.1 / Haiku 4.5 |
-| Google Gemini | Gemini 2.0 Flash / 1.5 Pro |
-| xAI Grok | Grok-3 / Grok-2 |
-| Mistral | Mistral Large / Small / Codestral |
-| Groq | Llama 3.3 70B / Mixtral |
-| Together AI | Llama 3.3 70B / Qwen2.5 |
-| Perplexity | Sonar Pro / Sonar |
-| Cohere | Command R+ / Command R |
-| OpenRouter | 路由 Claude / Gemini / GPT / DeepSeek 等 |
+| OpenAI | GPT-5 / GPT-5-mini / GPT-4.1 / o3 / o4-mini |
+| Anthropic Claude | Claude Opus 4.7 / Sonnet 4.6 / Haiku 4.5 |
+| Google Gemini | Gemini 2.5 Pro / Flash / Flash-Lite |
+| xAI Grok | Grok 4 / Grok 4 Fast / Grok 3 |
+| Mistral | Mistral Large / Medium / Magistral / Codestral |
+| Groq | Llama 4 Maverick / Scout / Llama 3.3 / Qwen3 |
+| Together AI | Llama 4 / Llama 3.3 / Qwen3-235B / DeepSeek V3/R1 |
+| Perplexity | Sonar Pro / Sonar Reasoning Pro |
+| Cohere | Command A / Command R+ |
+| OpenRouter | 路由 Claude 4.7 / GPT-5 / Gemini 2.5 / Grok 4 / Llama 4 等 |
 
 ### 国内
 | 提供商 | 代表模型 |
 |--------|------|
-| DeepSeek | DeepSeek-V3 / R1 |
-| 通义千问 Qwen | Qwen-Max / Plus / Turbo |
-| 智谱 GLM | GLM-4.5 / GLM-4-Plus / Flash |
+| DeepSeek | DeepSeek V3 / R1 (推理) |
+| 通义千问 Qwen | Qwen3-Max / Qwen3-235B / QwQ-Plus (推理) |
+| 智谱 GLM | GLM-4.6 / GLM-4.5 / GLM-Z1-Air (推理) |
 | 零一万物 | Yi-Lightning / Large |
-| 阶跃星辰 | Step-2-16K / Step-1 |
-| 百川 | Baichuan4 / Baichuan3-Turbo |
-| 讯飞星火 | Spark Max / Pro / Lite |
-| 腾讯混元 | Hunyuan-Pro / Standard |
-| 硅基流动 | Qwen2.5-72B / DeepSeek-V3 / GLM-4 |
-| 百度 ERNIE | ERNIE 4.5 / 3.5 |
-| 字节 Doubao | Doubao Pro 32K / 4K |
-| MiniMax | MiniMax-Text-01 / abab6.5s |
-| 月之暗面 Kimi | Kimi-Latest / Moonshot-V1 |
+| 阶跃星辰 | Step-2-16K / Step-2-Mini |
+| 百川 | Baichuan4-Turbo / Baichuan4-Air |
+| 讯飞星火 | Spark 4.0 Ultra / Max / Pro |
+| 腾讯混元 | Hunyuan-TurboS / Turbo / Pro |
+| 硅基流动 | DeepSeek V3/R1 / Qwen3-235B |
+| 百度 ERNIE | ERNIE-X1-Turbo (推理) / 4.5-Turbo |
+| 字节 Doubao | Doubao-1.5-Pro 32K/256K / Lite |
+| MiniMax | MiniMax-M1 (推理) / Text-01 / abab7 |
+| 月之暗面 Kimi | Kimi K2 / Moonshot-V1 128K/32K |
 
 ### 其它
 | 提供商 | 说明 |
 |--------|------|
 | Azure OpenAI | 自定义端点 |
-| Ollama | 本地部署（默认 http://localhost:11434） |
+| Ollama | 本地部署 Llama 3.3 / Qwen3 / DeepSeek-R1 等（默认 http://localhost:11434） |
 | 自定义 API | 任意 OpenAI 兼容端点 |
 
 ## 📋 使用说明
