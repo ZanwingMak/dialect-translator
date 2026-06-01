@@ -1,18 +1,22 @@
 <template>
   <div class="relative min-h-[100dvh] px-4 py-6 sm:py-10 overflow-hidden">
-    <!-- 背景浮动色球：固定位置缓慢漂浮，营造壁纸感 -->
+    <!-- 背景浮动色球：Apple Intelligence 风格 4 色 (紫/蓝/粉/橙) 缓慢漂浮 -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
       <div
-        class="absolute -top-20 -left-16 w-[420px] h-[420px] rounded-full opacity-70 blur-3xl animate-float-slow"
-        style="background: radial-gradient(circle, #ffb88c 0%, transparent 70%);"
+        class="absolute -top-24 -left-20 w-[440px] h-[440px] rounded-full opacity-60 blur-3xl animate-float-slow"
+        style="background: radial-gradient(circle, #a78bfa 0%, transparent 70%);"
       ></div>
       <div
-        class="absolute top-1/3 -right-24 w-[460px] h-[460px] rounded-full opacity-60 blur-3xl animate-float-slower"
-        style="background: radial-gradient(circle, #ff8fab 0%, transparent 70%);"
+        class="absolute -top-16 right-0 w-[420px] h-[420px] rounded-full opacity-55 blur-3xl animate-float-slower"
+        style="background: radial-gradient(circle, #60a5fa 0%, transparent 70%);"
       ></div>
       <div
-        class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] rounded-full opacity-65 blur-3xl animate-float-slow"
-        style="background: radial-gradient(circle, #fcd34d 0%, transparent 70%);"
+        class="absolute top-1/2 -right-28 w-[460px] h-[460px] rounded-full opacity-55 blur-3xl animate-float-slow"
+        style="background: radial-gradient(circle, #f472b6 0%, transparent 70%);"
+      ></div>
+      <div
+        class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] rounded-full opacity-55 blur-3xl animate-float-slower"
+        style="background: radial-gradient(circle, #fb923c 0%, transparent 70%);"
       ></div>
     </div>
 
@@ -22,7 +26,7 @@
         <div class="flex items-center gap-2">
           <div
             class="w-8 h-8 rounded-2xl flex items-center justify-center"
-            style="background: linear-gradient(135deg, #fb923c 0%, #f97316 100%); box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 4px 12px -2px rgba(249,115,22,0.4);"
+            style="background: linear-gradient(135deg, #3395ff 0%, #007AFF 100%); box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 4px 12px -2px rgba(0,122,255,0.4);"
           >
             <PhSpeakerHigh :size="16" class="text-white" weight="fill" />
           </div>

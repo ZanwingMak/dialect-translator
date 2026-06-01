@@ -49,7 +49,7 @@ const active = computed(() => props.isRecording || props.isWebSpeechListening)
 </script>
 
 <style scoped>
-/* 闲置态：白玻璃球，柔和高光 */
+/* 闲置态：白玻璃球，柔和高光，内部 System Blue 微微透出 */
 .is-idle {
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.8);
@@ -57,19 +57,19 @@ const active = computed(() => props.isRecording || props.isWebSpeechListening)
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   box-shadow:
     0 1px 0 0 rgba(255, 255, 255, 0.9) inset,
-    0 -4px 12px 0 rgba(249, 115, 22, 0.08) inset,
-    0 12px 36px -8px rgba(31, 18, 2, 0.18);
+    0 -4px 12px 0 rgba(0, 122, 255, 0.08) inset,
+    0 12px 36px -8px rgba(20, 30, 60, 0.18);
 }
 
-/* 激活态：暖橙渐变 + 强光晕 + 呼吸 */
+/* 激活态：iOS 录音红橙渐变 + 强光晕 + 呼吸（用录音语义色，不被改 accent 牵动） */
 .is-active {
-  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+  background: linear-gradient(180deg, #ff8a5b 0%, #ff5a3c 100%);
   border: 1px solid rgba(255, 255, 255, 0.35);
   animation: pulse-glow 2s ease-in-out infinite;
   box-shadow:
     0 1px 0 0 rgba(255, 255, 255, 0.5) inset,
     0 -8px 16px 0 rgba(255, 255, 255, 0.2) inset,
-    0 8px 28px -4px rgba(249, 115, 22, 0.55);
+    0 8px 28px -4px rgba(255, 90, 60, 0.55);
 }
 
 @keyframes pulse-glow {
@@ -78,15 +78,15 @@ const active = computed(() => props.isRecording || props.isWebSpeechListening)
     box-shadow:
       0 1px 0 0 rgba(255, 255, 255, 0.5) inset,
       0 -8px 16px 0 rgba(255, 255, 255, 0.2) inset,
-      0 0 0 0 rgba(249, 115, 22, 0.45),
-      0 8px 28px -4px rgba(249, 115, 22, 0.55);
+      0 0 0 0 rgba(255, 90, 60, 0.45),
+      0 8px 28px -4px rgba(255, 90, 60, 0.55);
   }
   50% {
     box-shadow:
       0 1px 0 0 rgba(255, 255, 255, 0.5) inset,
       0 -8px 16px 0 rgba(255, 255, 255, 0.2) inset,
-      0 0 0 18px rgba(249, 115, 22, 0),
-      0 8px 28px -4px rgba(249, 115, 22, 0.55);
+      0 0 0 18px rgba(255, 90, 60, 0),
+      0 8px 28px -4px rgba(255, 90, 60, 0.55);
   }
 }
 

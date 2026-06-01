@@ -12,11 +12,13 @@ export default {
           faint: '#a8a29e' // 占位 / 失活（stone-400）
         },
         accent: {
-          DEFAULT: '#f97316', // 暖橙（orange-500）
-          hover: '#fb923c', // 悬停亮一档
-          ring: 'rgba(249,115,22,0.35)'
+          DEFAULT: '#007AFF', // iOS System Blue
+          hover: '#3395ff', // 悬停亮一档
+          ring: 'rgba(0,122,255,0.35)'
         },
-        danger: '#e11d48'
+        // 录音激活仍使用暖橙：录音的视觉语义共识
+        record: '#ff6b35',
+        danger: '#ff3b30' // iOS System Red
       },
       fontFamily: {
         // 优先 SF Pro（iOS/macOS 原生），其次 Geist
@@ -33,14 +35,12 @@ export default {
       },
       // 液态玻璃专属阴影：组合内白高光 + 外环暗影
       boxShadow: {
-        // 主玻璃面板：上沿一道白色亮边 + 大范围柔阴影
-        'glass': '0 1px 0 0 rgba(255,255,255,0.7) inset, 0 8px 32px -8px rgba(31,18,2,0.18), 0 2px 8px -2px rgba(31,18,2,0.08)',
+        // 主玻璃面板：上沿一道白色亮边 + 大范围柔阴影（阴影偏冷蓝）
+        'glass': '0 1px 0 0 rgba(255,255,255,0.7) inset, 0 8px 32px -8px rgba(20,30,60,0.16), 0 2px 8px -2px rgba(20,30,60,0.08)',
         // 玻璃按钮：更轻更紧凑
-        'glass-btn': '0 1px 0 0 rgba(255,255,255,0.6) inset, 0 4px 12px -4px rgba(31,18,2,0.12)',
-        // 凸起按钮（如 CTA）：暖橙发光
-        'glow-accent': '0 1px 0 0 rgba(255,255,255,0.4) inset, 0 8px 24px -6px rgba(249,115,22,0.5)',
-        // 录音激活：暖橙强光晕
-        'pulse-accent': '0 0 0 8px rgba(249,115,22,0.18), 0 8px 32px -4px rgba(249,115,22,0.55)'
+        'glass-btn': '0 1px 0 0 rgba(255,255,255,0.6) inset, 0 4px 12px -4px rgba(20,30,60,0.12)',
+        // 凸起按钮（如 CTA）：System Blue 发光
+        'glow-accent': '0 1px 0 0 rgba(255,255,255,0.4) inset, 0 8px 24px -6px rgba(0,122,255,0.5)'
       },
       animation: {
         breathe: 'breathe 2.4s ease-in-out infinite',
@@ -51,8 +51,8 @@ export default {
       },
       keyframes: {
         breathe: {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(249,115,22,0.55), 0 8px 32px -4px rgba(249,115,22,0.4)' },
-          '50%': { boxShadow: '0 0 0 18px rgba(249,115,22,0), 0 8px 32px -4px rgba(249,115,22,0.5)' }
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(255,107,53,0.55), 0 8px 32px -4px rgba(255,107,53,0.4)' },
+          '50%': { boxShadow: '0 0 0 18px rgba(255,107,53,0), 0 8px 32px -4px rgba(255,107,53,0.5)' }
         },
         'fade-up': {
           from: { opacity: 0, transform: 'translateY(8px)' },

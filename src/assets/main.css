@@ -14,12 +14,13 @@
 
   body {
     @apply min-h-[100dvh];
-    /* iOS 26 风格暖色渐变底，多层 radial 模拟壁纸 */
+    /* Apple Intelligence 风格冷暖多彩渐变底（蓝紫粉橙环绕） */
     background:
-      radial-gradient(120% 80% at 80% 0%, #ffd1a8 0%, transparent 55%),
-      radial-gradient(120% 80% at 20% 30%, #ffb4c1 0%, transparent 60%),
-      radial-gradient(100% 80% at 50% 100%, #fbbf77 0%, transparent 55%),
-      linear-gradient(180deg, #fff4e0 0%, #ffe2d4 60%, #ffd0c4 100%);
+      radial-gradient(110% 70% at 85% 0%, #d6e8ff 0%, transparent 55%),
+      radial-gradient(110% 70% at 15% 25%, #e6d6ff 0%, transparent 60%),
+      radial-gradient(100% 70% at 80% 80%, #ffdbe6 0%, transparent 55%),
+      radial-gradient(90% 60% at 20% 100%, #ffe1c4 0%, transparent 55%),
+      linear-gradient(180deg, #f4f7ff 0%, #fbf3ff 50%, #fff0f5 100%);
     background-attachment: fixed;
   }
 
